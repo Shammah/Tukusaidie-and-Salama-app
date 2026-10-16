@@ -1,0 +1,52 @@
+{% extends "admin/_layout.html" %}
+{% from "macros.html" import icon, csrf, status_chip %}
+{% block admin %}
+<div class="pagehead"><div><span class="eyebrow">{{ me.email }}</span><h2 style="margin-top:6px">Overview</h2></div><span class="chip ok"><span class="pulse-dot"></span>Live</span></div>
+
+{% if pay.mode == "simulate" %}
+<div class="banner warn">{{ icon("flask-conical") }}<span><b>M-Pesa test mode.</b> Prompts are simulated and no money moves. Set the MPESA_ variables to switch to the Daraja sandbox or production.</span></div>
+{% elif not pay.ready %}
+<div class="banner warn">{{ icon("triangle-alert") }}<span><b>M-Pesa prompts are off.</b> The Daraja keys or a public https address (PUBLIC_URL) are missing, so customers can only pay by till code.</span></div>
+{% elif pay.mode == "sandbox" %}
+<div class="banner info">{{ icon("info") }}<span><b>M-Pesa sandbox.</b> Prompts go through Safaricom's test system. Switch MPESA_ENV to production with your live keys to take real payments.</span></div>
+{% endif %}
+
+<div class="stats">
+  <div class="stat"><span>Tickets</span><b>{{ stats.tickets }}</b></div>
+  <div class="stat"><span>Total quoted</span><b>{{ ksh(stats.quoted) }}</b></div>
+  <div class="stat"><span>Paid</span><b>{{ ksh(stats.paid) }}</b></div>
+  <div class="stat"><span>Businesses</span><b>{{ stats.businesses }}</b></div>
+</div>
+
+<div class="grid g2">
+  <div class="card stack">
+    <h3>Needs your attention</h3>
+    <div class="list">
+      {% for p in review %}
+      <a class="item" href="{{ url_for('admin.ticket', tid=p.ticket_id) }}"><span class="ico">{{ icon("receipt") }}</span><span class="grow"><b>Confirm till code {{ p.receipt }}</b><span class="meta">{{ p.ticket.code }} · {{ ksh(p.amount) }} · {{ p.ticket.business.name }}</span></span>{{ icon("chevron-right") }}</a>
+      {% endfor %}
+      {% for t in nego %}
+      <a class="item" href="{{ url_for('admin.ticket', tid=t.id) }}"><span class="ico">{{ icon("handshake") }}</span><span class="grow"><b>Offer of {{ ksh(t.offer) }} on {{ t.code }}</b><span class="meta">Our price {{ ksh(t.fee) }} · {{ t.business.name }}</span></span>{{ icon("chevron-right") }}</a>
+      {% endfor %}
+      {% for a in pending_agents %}
+      <a class="item" href="{{ url_for('admin.agents') }}"><span class="ico">{{ icon("user-plus") }}</span><span class="grow"><b>Agent waiting: {{ a.name }}</b><span class="meta">{{ a.certs|join(", ") }}</span></span>{{ icon("chevron-right") }}</a>
+      {% endfor %}
+      {% for s in pending_shops %}
+      <a class="item" href="{{ url_for('admin.shops') }}"><span class="ico">{{ icon("store") }}</span><span class="grow"><b>Shop waiting: {{ s.name }}</b><span class="meta">{{ s.town }}</span></span>{{ icon("chevron-right") }}</a>
+      {% endfor %}
+      {% if stats.unassigned %}
+      <a class="item" href="{{ url_for('admin.tickets', status='unassigned') }}"><span class="ico">{{ icon("user-x") }}</span><span class="grow"><b>{{ stats.unassigned }} ticket{{ "s" if stats.unassigned != 1 }} without an agent</b><span class="meta">Assign by hand or approve an agent with the speciality</span></span>{{ icon("chevron-right") }}</a>
+      {% endif %}
+    </div>
+    {% if not (review or nego or pending_agents or pending_shops or stats.unassigned) %}<p class="muted">All clear. Nothing is waiting for you.</p>{% endif %}
+  </div>
+  <div class="card stack">
+    <div class="row between"><h3>Latest tickets</h3><a class="btn sm ghost" href="{{ url_for('admin.tickets') }}">All</a></div>
+    <div class="list">
+      {% for t in recent %}
+      <a class="item" href="{{ url_for('admin.ticket', tid=t.id) }}"><span class="grow"><b>{{ t.title }}</b><span class="meta">{{ t.code }} · {{ t.business.name }} · {{ ksh(t.fee) }}</span></span>{{ status_chip(t) }}</a>
+      {% else %}<p class="muted">No tickets yet.</p>{% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

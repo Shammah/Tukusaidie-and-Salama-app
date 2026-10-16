@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block title %}{{ cat.name }} · Tukusaidie{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('tuku.services') }}">{{ icon("arrow-left") }}All services</a>
+<div class="split">
+  <div class="stack">
+    <div class="row" style="gap:14px;margin-bottom:6px">
+      <span class="ico lg">{{ icon(cat.icon) }}</span>
+      <div class="grow"><h2>{{ cat.name }}</h2><p class="muted">{{ cat.desc }}</p></div>
+    </div>
+    {% for s in cat.issues %}
+    {% set band = bands[s.band] %}
+    <details class="issue" id="i{{ loop.index0 }}" {% if open_idx == loop.index0 %}open{% endif %}>
+      <summary><span class="grow">{{ s.title }}</span><span class="chip">{{ ksh(band.fee) }}</span></summary>
+      <div class="body">
+        <div class="callout"><b>Quick fix.</b> {{ s.fix }}</div>
+        <div><h4 style="font-size:14px;margin-bottom:4px">Why it happens</h4><p class="muted">{{ s.why }}</p></div>
+        {% if s.steps %}
+        <div><h4 style="font-size:14px;margin-bottom:6px">Step by step</h4><ol class="steps">{% for st in s.steps %}<li>{{ st }}</li>{% endfor %}</ol></div>
+        {% endif %}
+        <div class="callout warm"><b>{{ band.name }} job · {{ ksh(band.fee) }}.</b> {{ band.what }}. {{ advice[s.band] }}</div>
+        <div class="row">
+          <a class="btn primary" href="{{ url_for('tuku.raise_ticket', cat_id=cat.id, idx=loop.index0) }}">{{ icon("wrench") }}Raise a ticket</a>
+          <a class="btn" href="{{ url_for('tuku.chat') }}">{{ icon("message-circle") }}Ask a question, free</a>
+        </div>
+      </div>
+    </details>
+    {% endfor %}
+  </div>
+  <aside class="stack">
+    <div class="card stack">
+      <h3>Prices are clear</h3>
+      <p class="small muted">Every ticket gets a fixed labour price from these bands. You see it before paying and can make an offer.</p>
+      <div class="list">{% for b in bands %}<div><span class="grow"><b class="small">{{ b.name }}</b><span class="meta">{{ b.what }}</span></span><b class="small">{{ ksh(b.fee) }}</b></div>{% endfor %}</div>
+    </div>
+    <div class="card stack">
+      <div class="row between"><h3>Shops that fix this</h3><a class="btn sm ghost" href="{{ url_for('tuku.shops', cat=cat.id) }}">All</a></div>
+      {% for s in shops %}
+      <div class="shopcard"><span class="ico">{{ icon("store") }}</span><span class="grow"><b>{{ s.shop.name }}</b><span class="meta">{% if s.km is not none %}<span class="dist">{{ "%.1f"|format(s.km) }} km</span> · {% endif %}{{ s.shop.town }}{% if s.shop.address %}, {{ s.shop.address }}{% endif %}</span></span></div>
+      {% else %}
+      <p class="small muted">No approved shop covers this area yet.</p>
+      {% endfor %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

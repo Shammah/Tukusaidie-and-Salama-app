@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block title %}Computer shops · Tukusaidie{% endblock %}
+{% block content %}
+<div class="stack">
+  <div class="pagehead"><div><h2>Computer shops{% if cat %} for {{ C.CATS[cat].name|lower }}{% endif %}</h2><p class="muted">Approved shops, nearest first when you share your location.</p></div></div>
+  <form class="card row" action="{{ url_for('tuku.shops') }}">
+    {% if cat %}<input type="hidden" name="cat" value="{{ cat }}">{% endif %}
+    <input class="grow" type="text" name="place" value="{{ place }}" placeholder="Your town, e.g. Kisii" aria-label="Your town" style="flex:1;min-width:160px">
+    <button class="btn" type="submit">Search</button>
+    <button class="btn primary" type="button" data-geo="geomsg" data-go="{{ url_for('tuku.shops') }}">{{ icon("locate-fixed") }}Near me</button>
+    <p class="hint small muted" id="geomsg" role="status" style="width:100%">{% if located %}Sorted by distance from you.{% endif %}</p>
+  </form>
+  <div class="grid g2">
+    {% for s in shops %}
+    {% set shop = s.shop %}
+    <div class="card stack">
+      <div class="row"><span class="ico">{{ icon("store") }}</span><div class="grow"><h3>{{ shop.name }}</h3><span class="meta">{{ shop.town }}{% if shop.address %}, {{ shop.address }}{% endif %}</span></div>{% if s.km is not none %}<span class="dist">{{ "%.1f"|format(s.km) }} km</span>{% endif %}</div>
+      <div class="trow">{% for c in shop.cats[:5] %}<span class="chip">{{ C.CATS[c].short }}</span>{% endfor %}</div>
+      {% if shop.services %}
+      <div class="list small">{% for i in shop.services[:4] %}<div><span class="grow">{{ i.name }}</span><b>{{ ksh(i.price) if i.price else "Ask" }}</b></div>{% endfor %}</div>
+      {% endif %}
+      <div class="row">
+        <a class="btn sm primary" href="{{ map_link(shop) }}" target="_blank" rel="noopener">{{ icon("navigation") }}Directions</a>
+        <a class="btn sm" href="tel:{{ shop.phone }}">{{ icon("phone") }}Call {{ shop.phone }}</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty" style="grid-column:1/-1">{{ icon("store") }}<p>No approved shops {% if cat %}for this service {% endif %}yet.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

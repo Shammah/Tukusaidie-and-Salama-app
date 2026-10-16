@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, status_chip, work_chip %}
+{% block title %}My tickets · Tukusaidie{% endblock %}
+{% block bodyattrs %}data-pulse="1"{% endblock %}
+{% block content %}
+<div class="stack">
+  <div class="pagehead"><div><h2>My tickets</h2><p class="muted">Prices, payments and progress. Updates appear here live.</p></div>
+    <a class="btn primary" href="{{ url_for('tuku.services') }}">{{ icon("plus") }}New ticket</a></div>
+  {% for t in tickets %}
+  <a class="ticketrow" href="{{ url_for('tuku.ticket', tid=t.id) }}">
+    <span class="ico">{{ icon(C.CATS[t.cat_id].icon) }}</span>
+    <span style="min-width:0"><b>{{ t.title }}</b><span class="meta">{{ t.code }} · {{ t.created_at|when }}{% if t.agent %} · {{ t.agent.name }}{% endif %}</span>
+      <span class="trow" style="margin-top:6px">{{ status_chip(t) }}{% if t.status == "paid" %}{{ work_chip(t) }}{% endif %}</span></span>
+    <span class="amt">{{ ksh(t.fee) }}</span>
+  </a>
+  {% else %}
+  <div class="empty">{{ icon("ticket") }}<p>No tickets yet. Most problems have a free fix: start with <a href="{{ url_for('tuku.services') }}">the services</a>.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

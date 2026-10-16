@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf, level_chip %}
+{% block title %}Your cyber check · Salama{% endblock %}
+{% block content %}
+{% set pct = (r.answered * 100 / r.qs|length)|round|int %}
+<div class="split">
+  <div class="stack-lg">
+    <section class="hero" style="padding:clamp(24px,4vw,40px)">
+      <div class="row" style="gap:24px;align-items:center">
+        <div class="ring {{ r.level[1] }}" style="--v:{{ r.overall or 0 }}"><div><b style="color:#fff">{{ r.overall if r.overall is not none else "–" }}</b><span class="small" style="color:var(--hero-muted)">{{ r.level[0] }}</span></div></div>
+        <div class="grow" style="min-width:220px">
+          <span class="eyebrow" style="color:var(--accent)">{{ me.name }}</span>
+          <h2 style="margin-top:6px;color:#fff">{% if not r.answered %}Ready when you are{% elif r.answered < r.qs|length %}{{ pct }}% done{% else %}Check complete{% endif %}</h2>
+          <p style="color:var(--hero-muted);margin-top:6px">{{ r.answered }} of {{ r.qs|length }} questions answered{% if r.gaps %} · {{ r.gaps|length }} things to improve{% endif %}.</p>
+          <div class="ctas" style="margin-top:16px">
+            <a class="btn primary" href="{{ url_for('salama.check') }}">{% if not r.answered %}Start the check{% elif r.answered < r.qs|length %}Continue{% else %}Review answers{% endif %} {{ icon("arrow-right") }}</a>
+            {% if r.answered %}<a class="btn" href="{{ url_for('salama.results') }}">See results</a>{% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="stack">
+      <h3>Sections</h3>
+      {% for s in r.secs %}
+      <a class="secrow" href="{{ url_for('salama.check', sec=s.sec.id) }}">
+        <span class="ico">{{ icon(s.sec.icon) }}</span>
+        <span class="grow"><b>{{ s.sec.name }}</b><span class="meta">{{ s.done }} of {{ s.n }} answered</span>
+          <span class="bar {{ s.level[1] }}" style="margin-top:8px"><i style="width:{{ (s.done * 100 / s.n)|round|int }}%"></i></span></span>
+        {% if s.done %}{{ level_chip(s.level, s.score) }}{% endif %}
+      </a>
+      {% endfor %}
+    </section>
+  </div>
+  <aside class="stack">
+    <form class="card stack" method="post" action="{{ url_for('salama.size') }}">
+      {{ csrf() }}
+      <h3>Your business size</h3>
+      <p class="small muted">Large companies get extra questions on governance, monitoring and suppliers.</p>
+      <div class="seg">
+        <label><input type="radio" name="size" value="S" {% if a.size == "S" %}checked{% endif %} onchange="this.form.submit()">Small business<span>Up to about 50 staff</span></label>
+        <label><input type="radio" name="size" value="L" {% if a.size == "L" %}checked{% endif %} onchange="this.form.submit()">Large company<span>Bigger teams, more systems</span></label>
+      </div>
+      <noscript><button class="btn sm" type="submit">Save</button></noscript>
+    </form>
+    <div class="card stack">
+      <h3>Need help fixing something?</h3>
+      <p class="small muted">Raise a ticket with a certified agent in the IT helpdesk. Same account.</p>
+      <a class="btn" href="{{ url_for('tuku.category', cat_id='sec') }}">{{ icon("headset") }}Security help</a>
+    </div>
+    {% if r.answered %}
+    <form method="post" action="{{ url_for('salama.reset') }}" data-confirm="Clear all your answers and start again?">{{ csrf() }}<button class="btn ghost sm" type="submit">{{ icon("rotate-ccw") }}Start over</button></form>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

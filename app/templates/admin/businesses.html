@@ -1,0 +1,40 @@
+{% extends "admin/_layout.html" %}
+{% from "macros.html" import icon, csrf, level_chip, answer_chip %}
+{% block admin %}
+<div class="pagehead"><div><h2>Businesses</h2><p class="muted">Customer accounts, their tickets and Salama cyber-check answers.</p></div></div>
+{% if cur %}
+<div class="stack">
+  <a class="back" href="{{ url_for('admin.businesses') }}">{{ icon("arrow-left") }}All businesses</a>
+  <div class="card stack">
+    <div class="row"><div class="grow"><h3>{{ cur.name }}</h3><span class="meta">{{ cur.phone }} · joined {{ cur.created_at|when }} · {{ cur.tickets|length }} tickets</span></div>
+      {% if r %}{{ level_chip(r.level, r.overall) }}{% endif %}</div>
+    <div class="row">
+      <a class="btn sm" href="{{ url_for('admin.chats', b=cur.id) }}">{{ icon("message-circle") }}Chat</a>
+      {% if r and r.answered %}<form method="post" action="{{ url_for('admin.clear_answers', bid=cur.id) }}" data-confirm="Delete all cyber-check answers for {{ cur.name }}?">{{ csrf() }}<button class="btn sm danger" type="submit">Clear cyber-check answers</button></form>{% endif %}
+    </div>
+    <form class="inline" method="post" action="{{ url_for('admin.reset_password', bid=cur.id) }}" style="max-width:460px" novalidate>
+      {{ csrf() }}<input type="text" name="password" placeholder="New password for this business (8+ characters)" autocomplete="off" aria-label="New password"><button class="btn sm" type="submit">Set password</button>
+    </form>
+  </div>
+  {% if r and r.answered %}
+  <p class="small muted">{{ "Large company" if cur.assessment.size == "L" else "Small business" }} · {{ r.answered }} of {{ r.qs|length }} answered</p>
+  {% for s in r.secs %}
+  <details class="sec"><summary><span class="ico">{{ icon(s.sec.icon) }}</span><span class="grow">{{ s.sec.name }}</span>{{ level_chip(s.level, s.score) }}</summary>
+    <div class="in"><ul class="qa">{% for q in s.qs %}<li><span>{{ q.text }}</span>{{ answer_chip(cur.assessment.answers.get(q.key)) }}</li>{% endfor %}</ul></div></details>
+  {% endfor %}
+  {% else %}<p class="muted">This business has not started the cyber check.</p>{% endif %}
+</div>
+{% else %}
+<div class="card tblwrap">
+  <table class="tbl">
+    <thead><tr><th>Business</th><th>Phone</th><th>Tickets</th><th>Cyber check</th></tr></thead>
+    <tbody>
+    {% for b in rows %}
+    <tr><td><a href="{{ url_for('admin.businesses', b=b.id) }}"><b>{{ b.name }}</b></a></td><td>{{ b.phone }}</td><td>{{ b.tickets|length }}</td>
+      <td>{% if b.id in summaries %}{{ level_chip(summaries[b.id].level, summaries[b.id].overall) }}{% else %}<span class="muted small">Not started</span>{% endif %}</td></tr>
+    {% else %}<tr><td colspan="4" class="muted">No businesses yet.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

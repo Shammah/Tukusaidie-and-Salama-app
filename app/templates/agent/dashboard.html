@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf, status_chip, work_chip, location_line, chat %}
+{% block title %}Agent · Tukusaidie{% endblock %}
+{% block content %}
+<div class="stack-lg">
+  <div class="pagehead">
+    <div><span class="eyebrow">Service agent</span><h2 style="margin-top:6px">Hello, {{ a.name.replace("Sample: ", "").split(" ")[0] }}</h2></div>
+    <span class="chip {{ {'approved':'ok','pending':'warn'}.get(a.status, 'bad') }}">{{ a.status|capitalize }}</span>
+  </div>
+
+  {% if a.status != "approved" %}
+  <div class="card stack">
+    <div class="row"><span class="ico lg">{{ icon("hourglass" if a.status == "pending" else "ban") }}</span>
+      <div class="grow"><h3>{{ "Almost there" if a.status == "pending" else "Account on hold" }}</h3>
+        <p class="muted">{% if a.status == "pending" %}The admin is checking your certification. Tickets in your specialities appear here once you are approved. This page updates by itself.{% else %}The admin has suspended this account. Contact the admin to have it reinstated.{% endif %}</p></div></div>
+  </div>
+  {% else %}
+  <div class="stats">
+    <div class="stat"><span>Open tickets</span><b>{{ open_n }}</b></div>
+    <div class="stat"><span>Resolved</span><b>{{ mine|length - open_n }}</b></div>
+    <div class="stat"><span>Customers</span><b>{{ biz_list|length }}</b></div>
+  </div>
+  <nav class="tabs" aria-label="Agent sections">
+    <a href="{{ url_for('agent.dashboard') }}" {% if tab == "tickets" %}aria-current="page"{% endif %}>{{ icon("wrench") }}My tickets ({{ mine|length }})</a>
+    <a href="{{ url_for('agent.dashboard', tab='chats') }}" {% if tab == "chats" %}aria-current="page"{% endif %}>{{ icon("message-circle") }}Chats</a>
+  </nav>
+
+  {% if tab == "tickets" %}
+  <div class="grid g2">
+    {% for t in mine %}
+    <div class="card stack">
+      <div class="trow"><span class="mono muted">{{ t.code }}</span>{{ work_chip(t) }}<span class="chip {{ 'ok' if t.status == 'paid' else '' }}">{{ "Paid" if t.status == "paid" else "Not paid yet" }}</span></div>
+      <div><h3>{{ t.title }}</h3><p class="small muted">{{ t.business.name }} · {{ t.business.phone }} · {{ C.CATS[t.cat_id].name }} · {{ t.priority }} priority</p></div>
+      {% if t.note %}<p class="small"><b>Customer note:</b> {{ t.note }}</p>{% endif %}
+      {{ location_line(t) }}
+      <div class="row">
+        {% if t.work == "assigned" %}<form method="post" action="{{ url_for('agent.work', tid=t.id) }}">{{ csrf() }}<button class="btn sm primary" name="step" value="start">{{ icon("play") }}Start work</button></form>
+        {% elif t.work == "in progress" %}<form method="post" action="{{ url_for('agent.work', tid=t.id) }}">{{ csrf() }}<button class="btn sm primary" name="step" value="done">{{ icon("check") }}Mark resolved</button></form>
+        {% else %}<form method="post" action="{{ url_for('agent.work', tid=t.id) }}">{{ csrf() }}<button class="btn sm" name="step" value="reopen">{{ icon("rotate-ccw") }}Reopen</button></form>{% endif %}
+        <a class="btn sm" href="{{ url_for('agent.dashboard', tab='chats', b=t.business_id) }}">{{ icon("message-circle") }}Chat</a>
+        <a class="btn sm ghost" href="tel:{{ t.business.phone }}">{{ icon("phone") }}Call</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty" style="grid-column:1/-1">{{ icon("inbox") }}<p>No tickets yet. New tickets in your specialities are assigned to you automatically.</p></div>
+    {% endfor %}
+  </div>
+  {% else %}
+  {% if cur %}
+  <div class="split sidebar">
+    <nav class="threads" aria-label="Conversations">
+      {% for b in biz_list %}<a href="{{ url_for('agent.dashboard', tab='chats', b=b.id) }}" {% if b.id == cur.id %}aria-current="page"{% endif %}><b>{{ b.name }}</b><span class="meta">{{ b.phone }}</span></a>{% endfor %}
+    </nav>
+    <div class="stack"><h3>{{ cur.name }}</h3>{{ chat(url_for('api.chat_get', bid=cur.id), "agent", msgs, placeholder="Reply to " ~ cur.name) }}</div>
+  </div>
+  {% else %}
+  <div class="empty">{{ icon("message-circle") }}<p>You can chat with a customer once one of their tickets is assigned to you.</p></div>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+
+  <div class="card stack">
+    <h3>Your profile</h3>
+    <div><span class="small muted">Specialities</span><div class="trow" style="margin-top:6px">{% for s in a.specs %}<span class="chip">{{ C.CATS[s].name if s in C.CATS else s }}</span>{% endfor %}</div></div>
+    <div><span class="small muted">Certifications</span><p>{{ a.certs|join(", ") }}</p></div>
+  </div>
+</div>
+{% endblock %}

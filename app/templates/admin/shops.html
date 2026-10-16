@@ -1,0 +1,31 @@
+{% extends "admin/_layout.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block admin %}
+<div class="pagehead"><div><h2>Computer shops</h2><p class="muted">Approved shops appear to customers, nearest first.</p></div></div>
+<div class="grid g2">
+  {% for s in shops %}
+  <div class="card stack">
+    <div class="row"><div class="grow"><h3>{{ s.name }}</h3><span class="meta">{{ s.phone }} · {{ s.town }}{% if s.address %}, {{ s.address }}{% endif %}</span></div>
+      <span class="chip {{ {'approved':'ok','pending':'warn'}.get(s.status, 'bad') }}">{{ s.status|capitalize }}</span></div>
+    <div class="trow">{% for c in s.cats %}<span class="chip">{{ C.CATS[c].short if c in C.CATS else c }}</span>{% endfor %}</div>
+    <p class="small"><b>Services:</b> {% for i in s.services %}{{ i.name }}{% if i.price %} ({{ ksh(i.price) }}){% endif %}{{ ", " if not loop.last }}{% else %}<span class="muted">none listed</span>{% endfor %}</p>
+    <p class="small muted">{{ s.records|length }} jobs recorded · {{ ksh(s.records|sum(attribute='amount')) }} · {% if s.lat is not none %}<a href="{{ map_link(s) }}" target="_blank" rel="noopener">map location set</a>{% else %}no map location{% endif %}</p>
+    <div class="row">
+      {% if s.status != "approved" %}
+      <form method="post" action="{{ url_for('admin.shop_action', sid=s.id, action='approve') }}">{{ csrf() }}<button class="btn sm primary" type="submit">{{ icon("check") }}{{ "Approve" if s.status == "pending" else "Reinstate" }}</button></form>
+      {% else %}
+      <form method="post" action="{{ url_for('admin.shop_action', sid=s.id, action='suspend') }}">{{ csrf() }}<button class="btn sm" type="submit">Hide from customers</button></form>
+      {% endif %}
+      {% if confirm == s.id %}
+      <form method="post" action="{{ url_for('admin.shop_action', sid=s.id, action='delete') }}">{{ csrf() }}<input type="hidden" name="confirm" value="yes"><button class="btn sm danger solid" type="submit">Yes, remove</button></form>
+      <a class="btn sm ghost" href="{{ url_for('admin.shops') }}">Cancel</a>
+      {% else %}
+      <a class="btn sm danger" href="{{ url_for('admin.shops', confirm=s.id) }}">Remove</a>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="empty" style="grid-column:1/-1">{{ icon("store") }}<p>No shops yet. Shops register from <a href="{{ url_for('shop.register') }}">the shop sign-up page</a>.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

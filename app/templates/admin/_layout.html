@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block title %}Admin · Tukusaidie{% endblock %}
+{% block content %}
+<div class="split sidebar">
+  <nav class="side" aria-label="Admin">
+    <a href="{{ url_for('admin.dashboard') }}" {% if tab == "home" %}aria-current="page"{% endif %}>{{ icon("layout-dashboard") }}Overview</a>
+    <a href="{{ url_for('admin.tickets') }}" {% if tab == "tickets" %}aria-current="page"{% endif %}>{{ icon("ticket") }}Tickets</a>
+    <a href="{{ url_for('admin.agents') }}" {% if tab == "agents" %}aria-current="page"{% endif %}>{{ icon("headset") }}Agents</a>
+    <a href="{{ url_for('admin.shops') }}" {% if tab == "shops" %}aria-current="page"{% endif %}>{{ icon("store") }}Shops</a>
+    <a href="{{ url_for('admin.chats') }}" {% if tab == "chats" %}aria-current="page"{% endif %}>{{ icon("message-circle") }}Chats</a>
+    <a href="{{ url_for('admin.businesses') }}" {% if tab == "businesses" %}aria-current="page"{% endif %}>{{ icon("building-2") }}Businesses</a>
+  </nav>
+  <div class="stack-lg" style="min-width:0">{% block admin %}{% endblock %}</div>
+</div>
+{% endblock %}

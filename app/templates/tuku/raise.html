@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}Raise a ticket · Tukusaidie{% endblock %}
+{% block mainclass %}narrow{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('tuku.category', cat_id=cat.id, open=idx) }}#i{{ idx }}">{{ icon("arrow-left") }}{{ cat.name }}</a>
+<div class="stack">
+  <div><span class="eyebrow">New ticket</span><h2 style="margin-top:6px">{{ iss.title }}</h2></div>
+  <form class="card stack" method="post" novalidate>
+    {{ csrf() }}
+    <fieldset>
+      <legend>How urgent is it?</legend>
+      <div class="seg">
+        {% for p in C.PRIORITIES %}
+        <label><input type="radio" name="priority" value="{{ p[0] }}" {% if p[0] == "Normal" %}checked{% endif %}>{{ p[0] }}<span>{{ p[1] }}</span></label>
+        {% endfor %}
+      </div>
+    </fieldset>
+    <div class="field">
+      <label for="place">Where are you? <span class="hint">(optional, helps for on-site visits)</span></label>
+      <div class="inline">
+        <input type="text" id="place" name="place" value="{{ place }}" placeholder="Town or building">
+        <button type="button" class="btn" data-geo="locmsg" title="Use my current location">{{ icon("locate-fixed") }}<span class="sr">Use my current location</span></button>
+      </div>
+      <input type="hidden" name="lat"><input type="hidden" name="lng"><input type="hidden" name="acc">
+      <p class="hint" id="locmsg" role="status"></p>
+    </div>
+    <label class="field">Details <span class="hint">(optional)</span><textarea name="note" rows="3" maxlength="2000" placeholder="What happened, any error message, what you already tried"></textarea></label>
+    <div class="pricebox"><div><b>{{ band.name }} job</b><span class="meta">{{ band.what }}</span></div><span class="price">{{ ksh(band.fee) }}</span></div>
+    <button class="btn primary block" type="submit">Raise ticket</button>
+    <p class="tiny muted center">Nothing is charged yet. You accept the price, or make an offer, on the next screen.</p>
+  </form>
+</div>
+{% endblock %}

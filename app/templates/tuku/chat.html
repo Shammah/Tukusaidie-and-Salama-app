@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, chat %}
+{% block title %}Chat · Tukusaidie{% endblock %}
+{% block content %}
+<div class="stack" style="max-width:760px;margin:0 auto">
+  <div class="pagehead"><div><h2>Chat</h2><p class="muted">{% if agent %}You are talking to {{ agent.name }}, your agent, and the helpdesk.{% else %}Your message goes to the helpdesk.{% endif %} Questions are free.</p></div>
+    <span class="chip ok"><span class="pulse-dot"></span>Live</span></div>
+  {{ chat(url_for('api.chat_get', bid=thread), "customer", msgs, empty="No messages yet. Tell us what is going on.") }}
+</div>
+{% endblock %}

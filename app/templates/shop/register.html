@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}List your shop · Tukusaidie{% endblock %}
+{% block content %}
+<div class="stack" style="max-width:720px;margin:0 auto">
+  <a class="back" href="{{ url_for('shop.login') }}">{{ icon("arrow-left") }}Shop sign in</a>
+  <div><span class="eyebrow">Computer shops</span><h2 style="margin-top:6px">List your shop on Tukusaidie</h2>
+    <p class="muted" style="margin-top:6px">Customers near you see your shop, services and prices once the admin approves it. Free.</p></div>
+  <form class="card stack" method="post" novalidate>
+    {{ csrf() }}
+    <div class="grid g2">
+      <label class="field">Shop name<input type="text" name="name" value="{{ form.name }}" autocomplete="organization" required></label>
+      <label class="field">Shop phone number<input type="tel" name="phone" value="{{ form.phone }}" placeholder="0712 345 678" inputmode="tel" required><span class="hint">You sign in with this number.</span></label>
+      <label class="field">Town<input type="text" name="town" value="{{ form.town }}" placeholder="Kisii" required></label>
+      <label class="field">Street or building <span class="hint">(optional)</span><input type="text" name="address" value="{{ form.address }}" placeholder="Hospital Road, Mwalimu Plaza"></label>
+    </div>
+    <label class="field">Password<input type="password" name="password" autocomplete="new-password" minlength="8" required><span class="hint">At least 8 characters.</span></label>
+    <fieldset>
+      <legend>Problems you can fix</legend>
+      <div class="checks">{% for c in C.HELP %}<label class="check"><input type="checkbox" name="cats" value="{{ c.id }}" {% if c.id in form.cats %}checked{% endif %}>{{ c.name }}</label>{% endfor %}</div>
+    </fieldset>
+    <button class="btn primary block" type="submit">Register shop</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf, status_chip, work_chip, location_line %}
+{% block title %}{{ t.code }} · Tukusaidie{% endblock %}
+{% block content %}
+{% set waiting = (payment and payment.status in ("pending", "review")) or t.status == "negotiating" %}
+<span hidden data-ticket-state="{{ url_for('api.ticket_state', tid=t.id) }}" data-stamp="{{ live_stamp }}" data-every="{{ 3000 if waiting else 8000 }}"></span>
+<a class="back" href="{{ url_for('tuku.tickets') }}">{{ icon("arrow-left") }}My tickets</a>
+<div class="split">
+  <div class="stack">
+    <div class="card stack">
+      <div class="trow"><span class="mono muted">{{ t.code }}</span>{{ status_chip(t) }}{{ work_chip(t) }}</div>
+      <div><h2>{{ t.title }}</h2><p class="muted">{{ cat.name }} · {{ t.priority }} priority · raised {{ t.created_at|when }}</p></div>
+      {% set step = {"quote": 1, "negotiating": 1, "accepted": 2, "paid": 3}[t.status] + (1 if t.work == "resolved" else 0) %}
+      <div class="track" aria-label="Progress">
+        <div class="on">Raised</div><div class="{{ 'on' if step >= 2 }}">Price agreed</div><div class="{{ 'on' if step >= 3 }}">Paid</div><div class="{{ 'on' if t.work == 'resolved' }}">Resolved</div>
+      </div>
+    </div>
+
+    {% if t.status == "quote" %}
+    <div class="card stack">
+      <h3>Here is the price</h3>
+      <div class="pricebox"><div><b>{{ band.name }} job</b><span class="meta">{{ band.what }}</span></div><span class="price">{{ ksh(t.fee) }}</span></div>
+      <p class="small muted">Labour only. Spare parts and new equipment are quoted separately.</p>
+      <form method="post" action="{{ url_for('tuku.accept', tid=t.id) }}">{{ csrf() }}<button class="btn primary block" type="submit">Accept {{ ksh(t.fee) }} and continue to payment</button></form>
+      <details class="issue">
+        <summary>I would like to negotiate</summary>
+        <form class="body" method="post" action="{{ url_for('tuku.offer', tid=t.id) }}" novalidate>
+          {{ csrf() }}
+          <label class="field">Your offer in KSh<input type="text" inputmode="numeric" name="offer" placeholder="{{ (t.fee * 0.8)|round|int }}" required></label>
+          <label class="field">Reason <span class="hint">(optional)</span><textarea name="note" rows="2" maxlength="300" placeholder="We have three machines with the same fault"></textarea></label>
+          <button class="btn" type="submit">Send my offer</button>
+        </form>
+      </details>
+    </div>
+
+    {% elif t.status == "negotiating" %}
+    <div class="card stack">
+      <div class="row"><span class="spinner" style="color:var(--brand)"></span><h3 class="grow">Waiting for the helpdesk to answer your offer</h3></div>
+      <p>You offered <b>{{ ksh(t.offer) }}</b> against our price of <b>{{ ksh(t.fee) }}</b>{% if t.offer_note %}: “{{ t.offer_note }}”{% endif %}.</p>
+      <p class="small muted">This page updates by itself when they reply.</p>
+      <form method="post" action="{{ url_for('tuku.accept', tid=t.id) }}">{{ csrf() }}<button class="btn" type="submit">Accept {{ ksh(t.fee) }} instead and pay now</button></form>
+    </div>
+
+    {% elif t.status == "accepted" %}
+    <div class="card stack" id="pay">
+      <h3>Pay {{ ksh(t.fee) }} with M-Pesa</h3>
+      {% if payment and payment.status == "pending" %}
+        <div class="banner info"><span class="spinner"></span><span><b>Check your phone{% if payment.phone %} ({{ payment.phone|local_phone }}){% endif %}.</b> Enter your M-Pesa PIN on the prompt. This page updates by itself.</span></div>
+        {% if payment.simulated %}<p class="tiny muted">Test mode: no prompt is sent and no money moves. The payment completes by itself in a few seconds.</p>{% endif %}
+      {% elif payment and payment.status == "review" %}
+        <div class="banner info">{{ icon("hourglass") }}<span>Code <b class="mono">{{ payment.receipt }}</b> received. The helpdesk is checking it against the M-Pesa statement. This page updates by itself.</span></div>
+      {% else %}
+        {% if payment and payment.status == "failed" %}
+        <div class="banner warn">{{ icon("circle-alert") }}<span>The last payment did not go through: {{ payment.result_desc or "cancelled" }}. Try again below.</span></div>
+        {% endif %}
+        <form class="stack" method="post" action="{{ url_for('tuku.pay', tid=t.id) }}" novalidate>
+          {{ csrf() }}
+          <div class="seg" data-pay>
+            {% if pay.ready %}<label><input type="radio" name="method" value="stk" checked>M-Pesa prompt<span>We send a PIN prompt to your phone</span></label>{% endif %}
+            <label><input type="radio" name="method" value="till" {% if not pay.ready %}checked{% endif %}>{{ "Paybill" if pay.paybill else "Till number" }}<span>Pay yourself, then enter the code</span></label>
+          </div>
+          {% if pay.ready %}
+          <div class="stack" data-pane="stk">
+            <label class="field">M-Pesa phone number<input type="tel" inputmode="tel" name="phone" value="{{ me.phone }}" placeholder="0712 345 678" autocomplete="tel"></label>
+            <p class="small muted">{{ icon("lock") }} Enter your PIN only on the prompt on your own phone. We never ask for it here.</p>
+            {% if pay.mode == "simulate" %}<p class="tiny muted">Test mode: no prompt is sent and no money moves.</p>{% elif pay.mode == "sandbox" %}<p class="tiny muted">M-Pesa sandbox: only Safaricom test numbers receive prompts.</p>{% endif %}
+            <button class="btn primary block" type="submit">Send M-Pesa prompt</button>
+          </div>
+          {% endif %}
+          <div class="stack" data-pane="till" {% if pay.ready %}hidden{% endif %}>
+            <ol class="steps">
+              {% if pay.paybill %}
+              <li>Open M-Pesa and choose <b>Lipa na M-Pesa</b>, then <b>Pay Bill</b></li>
+              <li>Business number <b class="mono">{{ pay.till or "—" }}</b>, account number <b class="mono">{{ t.code }}</b></li>
+              {% else %}
+              <li>Open M-Pesa and choose <b>Lipa na M-Pesa</b>, then <b>Buy Goods and Services</b></li>
+              <li>Enter till number <b class="mono">{{ pay.till or "—" }}</b></li>
+              {% endif %}
+              <li>Enter amount <b>{{ ksh(t.fee) }}</b> and your PIN</li>
+            </ol>
+            <label class="field">M-Pesa confirmation code<input type="text" name="code" placeholder="QJ61ABCD23" maxlength="10" autocapitalize="characters" class="mono"></label>
+            <button class="btn primary block" type="submit">Confirm payment</button>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+
+    {% elif t.status == "paid" %}
+    {% set p = t.paid_payment %}
+    <div class="card stack">
+      <div class="banner ok">{{ icon("circle-check") }}<span><b>Paid {{ ksh(t.fee) }}.</b> {% if p and p.receipt %}M-Pesa receipt <span class="mono">{{ p.receipt }}</span>.{% endif %}{% if p and p.simulated %} (test payment){% endif %}</span></div>
+      <p class="muted">{% if t.agent %}{{ t.agent.name }} is on it. Use the chat to agree on a time or share details.{% else %}An agent with the right speciality will be assigned shortly.{% endif %}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <aside class="stack">
+    <div class="card stack">
+      <h3>Your agent</h3>
+      {% if t.agent %}
+      <div class="row"><span class="ico">{{ icon("user-round-check") }}</span><span class="grow"><b>{{ t.agent.name }}</b><span class="meta">{{ t.agent.certs|join(", ") }}</span></span></div>
+      {% else %}
+      <p class="small muted">Not assigned yet. The helpdesk assigns a certified agent who covers {{ cat.name|lower }}.</p>
+      {% endif %}
+      <a class="btn block" href="{{ url_for('tuku.chat') }}">{{ icon("message-circle") }}Chat with the helpdesk</a>
+    </div>
+    <div class="card stack">
+      <h3>Details</h3>
+      <dl class="kv"><dt>Ticket</dt><dd class="mono">{{ t.code }}</dd><dt>Priority</dt><dd>{{ t.priority }}</dd><dt>Price</dt><dd>{{ ksh(t.fee) }}</dd></dl>
+      {{ location_line(t) }}
+      {% if t.note %}<p class="small"><b>Your note:</b> {{ t.note }}</p>{% endif %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

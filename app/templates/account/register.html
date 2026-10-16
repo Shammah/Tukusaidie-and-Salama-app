@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}Create your account · {{ "Salama" if app == "salama" else "Tukusaidie" }}{% endblock %}
+{% block mainclass %}narrow{% endblock %}
+{% block content %}
+<div class="stack">
+  <div>
+    <span class="eyebrow">Free account</span>
+    <h2 style="margin-top:6px">Register your business</h2>
+    <p class="muted" style="margin-top:6px">One account works for both the IT helpdesk and the cyber check.</p>
+  </div>
+  <form class="card stack" method="post" novalidate>
+    {{ csrf() }}<input type="hidden" name="next" value="{{ next }}">
+    <label class="field">Business name<input type="text" name="name" value="{{ form.name }}" placeholder="Kisii Fresh Supplies" autocomplete="organization" required></label>
+    <label class="field">Phone number<input type="tel" name="phone" value="{{ form.phone }}" placeholder="0712 345 678" autocomplete="tel" inputmode="tel" required><span class="hint">You sign in with this number. M-Pesa prompts go here by default.</span></label>
+    <label class="field">Password<input type="password" name="password" autocomplete="new-password" minlength="8" required><span class="hint">At least 8 characters.</span></label>
+    <button class="btn primary block" type="submit">Create account</button>
+  </form>
+  <p class="center small">Already registered? <a href="{{ url_for('customer.login', next=next) }}">Sign in</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block title %}Tukusaidie · IT help, sorted{% endblock %}
+{% block content %}
+<div class="stack-lg">
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow" style="color:var(--accent)">IT helpdesk for Kenyan businesses</span>
+      <h1 style="margin-top:12px">IT help,<br><em>sorted.</em></h1>
+      <p class="lead">Fix it yourself with free step-by-step guides, or get a certified technician. You see the price before you commit, and pay by M-Pesa.</p>
+      <div class="ctas">
+        <a class="btn primary" href="{{ url_for('customer.register', next=url_for('tuku.home')) }}">Get started free {{ icon("arrow-right") }}</a>
+        <a class="btn" href="{{ url_for('customer.login', next=url_for('tuku.home')) }}">I have an account</a>
+      </div>
+      <div class="ticks"><span>{{ icon("check") }}{{ n_issues }} free fixes</span><span>{{ icon("check") }}Price before you pay</span><span>{{ icon("check") }}M-Pesa</span></div>
+      <div class="staffrow">
+        <a href="{{ url_for('agent.login') }}">{{ icon("headset") }}Agents</a>
+        <a href="{{ url_for('shop.login') }}">{{ icon("store") }}Computer shops</a>
+        <a href="{{ url_for('admin.login') }}">{{ icon("lock") }}Admin</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="floaty" style="top:8%;left:4%"><span class="ico">{{ icon("printer") }}</span><span><b>Printer jammed</b>Fixed in 4 steps</span></div>
+      <div class="floaty" style="top:40%;right:0;animation-delay:-2s"><span class="ico">{{ icon("ticket") }}</span><span><b>IT-1042 · KSh 400</b>Agent assigned</span></div>
+      <div class="floaty" style="bottom:6%;left:12%;animation-delay:-4s"><span class="ico">{{ icon("smartphone") }}</span><span><b>M-Pesa prompt sent</b>Enter your PIN</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="stack">
+  <h2>How it works</h2>
+  <div class="steps-n">
+    <div><h3>Find your problem</h3><p>Search or pick a service. Every issue has a quick fix, the likely cause and a step-by-step guide.</p></div>
+    <div><h3>Raise a ticket</h3><p>Still stuck? Raise a ticket and see the price straight away. Happy with it, or make an offer.</p></div>
+    <div><h3>Pay and get it fixed</h3><p>Pay with an M-Pesa prompt or your till. A certified agent in that speciality takes it on and chats with you.</p></div>
+  </div>
+</section>
+
+<section class="stack">
+  <div class="row between"><h2>Services</h2><a class="btn sm ghost" href="{{ url_for('tuku.services') }}">See all {{ icon("arrow-right") }}</a></div>
+  <div class="cats">
+    {% for c in C.HELP[:8] %}
+    <a class="cat" href="{{ url_for('tuku.category', cat_id=c.id) }}"><span class="ico">{{ icon(c.icon) }}</span><b>{{ c.name }}</b><span class="meta">{{ c.desc }}</span></a>
+    {% endfor %}
+  </div>
+</section>
+</div>
+{% endblock %}

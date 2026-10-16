@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}Sign in · {{ "Salama" if app == "salama" else "Tukusaidie" }}{% endblock %}
+{% block mainclass %}narrow{% endblock %}
+{% block content %}
+<div class="stack">
+  <div>
+    <span class="eyebrow">Welcome back</span>
+    <h2 style="margin-top:6px">Sign in to your business</h2>
+  </div>
+  <form class="card stack" method="post" novalidate>
+    {{ csrf() }}<input type="hidden" name="next" value="{{ next }}">
+    <label class="field">Phone number<input type="tel" name="phone" value="{{ phone }}" placeholder="0712 345 678" autocomplete="tel" inputmode="tel" required></label>
+    <label class="field">Password<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn primary block" type="submit">Sign in</button>
+  </form>
+  <p class="center small">New here? <a href="{{ url_for('customer.register', next=next) }}">Create a free account</a></p>
+  <p class="center tiny muted">Forgot your password? Call or WhatsApp the helpdesk and the admin will set a new one for you.</p>
+</div>
+{% endblock %}

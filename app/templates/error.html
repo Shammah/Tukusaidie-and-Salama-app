@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block title %}{{ code }} · Something went wrong{% endblock %}
+{% block mainclass %}narrow{% endblock %}
+{% block content %}
+<div class="card stack center" style="padding:36px 22px">
+  <span class="ico lg" style="margin:0 auto">{{ icon("circle-alert") }}</span>
+  <h2>{{ {404: "Page not found", 403: "Not allowed", 400: "Something was off with that request"}.get(code, "Something went wrong") }}</h2>
+  <p class="muted">{% if code == 404 %}The page may have moved, or the link is wrong.{% elif code == 500 %}We hit an error on our side. Try again in a moment.{% else %}{{ message }}{% endif %}</p>
+  <div><a class="btn primary" href="{{ url_for('customer.index') }}">Go to the start</a></div>
+</div>
+{% endblock %}

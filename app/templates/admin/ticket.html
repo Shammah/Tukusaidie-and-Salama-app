@@ -1,0 +1,77 @@
+{% extends "admin/_layout.html" %}
+{% from "macros.html" import icon, csrf, status_chip, work_chip, location_line %}
+{% block admin %}
+<div>
+  <a class="back" href="{{ url_for('admin.tickets') }}">{{ icon("arrow-left") }}Tickets</a>
+  <div class="trow"><span class="mono muted">{{ t.code }}</span>{{ status_chip(t) }}{{ work_chip(t) }}</div>
+  <h2 style="margin-top:8px">{{ t.title }}</h2>
+  <p class="muted">{{ C.CATS[t.cat_id].name }} · {{ t.priority }} priority · {{ band.name }} band · raised {{ t.created_at|when }}</p>
+</div>
+<div class="grid g2">
+  <div class="stack">
+    <div class="card stack">
+      <h3>Customer</h3>
+      <dl class="kv"><dt>Business</dt><dd>{{ t.business.name }}</dd><dt>Phone</dt><dd><a href="tel:{{ t.business.phone }}">{{ t.business.phone }}</a></dd></dl>
+      {{ location_line(t) }}
+      {% if t.note %}<p class="small"><b>Note:</b> {{ t.note }}</p>{% endif %}
+      <a class="btn sm" href="{{ url_for('admin.chats', b=t.business_id) }}">{{ icon("message-circle") }}Open chat</a>
+    </div>
+
+    {% if t.status == "negotiating" %}
+    <div class="card stack" style="border-color:var(--hot)">
+      <h3>Customer offer</h3>
+      <p>Offered <b>{{ ksh(t.offer) }}</b> against {{ ksh(t.fee) }}{% if t.offer_note %}: “{{ t.offer_note }}”{% endif %}</p>
+      <div class="row">
+        <form method="post" action="{{ url_for('admin.ticket_action', tid=t.id, action='offer-accept') }}">{{ csrf() }}<button class="btn sm primary" type="submit">Accept {{ ksh(t.offer) }}</button></form>
+        <form method="post" action="{{ url_for('admin.ticket_action', tid=t.id, action='offer-keep') }}">{{ csrf() }}<button class="btn sm" type="submit">Keep {{ ksh(t.fee) }}</button></form>
+      </div>
+      <p class="tiny muted">To counter-offer, set a new price below. The customer is asked to accept it.</p>
+    </div>
+    {% endif %}
+
+    <div class="card stack">
+      <h3>Payments</h3>
+      {% for p in t.payments %}
+      <div class="stack" style="gap:6px;padding-bottom:10px;border-bottom:1px solid var(--line)">
+        <div class="trow"><b>{{ ksh(p.amount) }}</b><span class="chip">{{ "M-Pesa prompt" if p.method == "stk" else "Till code" }}</span>
+          <span class="chip {{ {'success':'ok','failed':'bad','review':'warn','pending':'info'}[p.status] }}">{{ {'success':'Paid','failed':'Failed','review':'Needs checking','pending':'Waiting'}[p.status] }}</span>{% if p.simulated %}<span class="chip">Test</span>{% endif %}</div>
+        <span class="small muted">{{ p.created_at|when }}{% if p.phone %} · {{ p.phone|local_phone }}{% endif %}{% if p.receipt %} · <span class="mono">{{ p.receipt }}</span>{% endif %}{% if p.result_desc %} · {{ p.result_desc }}{% endif %}</span>
+        {% if p.status == "review" %}
+        <div class="row">
+          <form method="post" action="{{ url_for('admin.ticket_action', tid=t.id, action='payment-ok') }}">{{ csrf() }}<input type="hidden" name="payment" value="{{ p.id }}"><button class="btn sm primary" type="submit">{{ icon("check") }}Code is on the statement</button></form>
+          <form method="post" action="{{ url_for('admin.ticket_action', tid=t.id, action='payment-reject') }}" data-confirm="Reject code {{ p.receipt }}? The customer will be asked to pay again.">{{ csrf() }}<input type="hidden" name="payment" value="{{ p.id }}"><button class="btn sm danger" type="submit">Not found</button></form>
+        </div>
+        {% endif %}
+      </div>
+      {% else %}<p class="small muted">No payment attempts yet.</p>{% endfor %}
+    </div>
+  </div>
+
+  <div class="stack">
+    <form class="card stack" method="post" action="{{ url_for('admin.ticket_action', tid=t.id, action='price') }}" novalidate>
+      {{ csrf() }}<h3>Price</h3>
+      <div class="inline"><input type="text" inputmode="numeric" name="fee" value="{{ t.fee }}" aria-label="Price in KSh" {% if t.status == "paid" %}disabled{% endif %}><button class="btn" type="submit" {% if t.status == "paid" %}disabled{% endif %}>Save</button></div>
+      <p class="tiny muted">{{ band.name }} band default is {{ ksh(band.fee) }}. Changing an agreed price asks the customer to accept again.</p>
+    </form>
+    <form class="card stack" method="post" action="{{ url_for('admin.ticket_action', tid=t.id, action='assign') }}">
+      {{ csrf() }}<h3>Agent</h3>
+      <select name="agent" aria-label="Agent">
+        <option value="">Not assigned</option>
+        {% for a in agents %}<option value="{{ a.id }}" {% if t.agent_id == a.id %}selected{% endif %}>{{ a.name }}{{ " ✓ covers this" if a.id in eligible }} · {{ load[a.id] }} open</option>{% endfor %}
+      </select>
+      <button class="btn" type="submit">Save agent</button>
+      {% if not eligible %}<p class="tiny muted">No approved agent covers {{ C.CATS[t.cat_id].name|lower }} yet.</p>{% endif %}
+    </form>
+    <form class="card stack" method="post" action="{{ url_for('admin.ticket_action', tid=t.id, action='delete') }}">
+      {{ csrf() }}<h3>Delete ticket</h3>
+      {% if confirm %}
+      <label class="field">Type <span class="mono">{{ t.code }}</span> to delete it and its payment history for good<input type="text" name="confirm" autocomplete="off"></label>
+      <button class="btn danger solid" type="submit">Delete for good</button>
+      {% else %}
+      <p class="small muted">Removes the ticket and its payment history.</p>
+      <a class="btn danger" href="{{ url_for('admin.ticket', tid=t.id, confirm=1) }}">Delete…</a>
+      {% endif %}
+    </form>
+  </div>
+</div>
+{% endblock %}

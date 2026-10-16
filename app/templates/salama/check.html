@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}Question {{ i + 1 }} · Salama{% endblock %}
+{% block mainclass %}narrow{% endblock %}
+{% block content %}
+{% set cur = a.answers.get(q.key) %}
+<div class="stack">
+  <div class="row between">
+    <a class="back" style="margin:0" href="{{ url_for('salama.overview') }}">{{ icon("arrow-left") }}Overview</a>
+    <span class="small muted">{{ i + 1 }} of {{ total }}</span>
+  </div>
+  <div class="bar"><i style="width:{{ (answered * 100 / total)|round|int }}%"></i></div>
+  <form class="card qcard" method="post" action="{{ url_for('salama.check') }}">
+    {{ csrf() }}<input type="hidden" name="i" value="{{ i }}">
+    <div class="row" style="margin-bottom:14px"><span class="ico">{{ icon(q.sec.icon) }}</span><span class="eyebrow">{{ q.sec.name }}</span>{% if q.weight == 2 %}<span class="chip brand">Essential</span>{% endif %}</div>
+    <h2>{{ q.text }}</h2>
+    <div class="why">{{ icon("info") }}<span>{{ q.why }}</span></div>
+    <div class="answers">
+      {% for v, label, sc in C.OPTIONS %}
+      <button type="submit" name="answer" value="{{ v }}" aria-pressed="{{ 'true' if cur == v else 'false' }}">
+        <span class="dot" style="background:{{ {'yes':'var(--ok)','partly':'var(--warn)','no':'var(--bad)','unsure':'var(--hot)','na':'var(--line)'}[v] }}"></span>{{ label }}
+      </button>
+      {% endfor %}
+    </div>
+    <div class="row between" style="margin-top:18px">
+      {% if i > 0 %}<button class="btn ghost sm" type="submit" name="go" value="back">{{ icon("arrow-left") }}Previous</button>{% else %}<span></span>{% endif %}
+      {% if i + 1 < total %}<a class="btn ghost sm" href="{{ url_for('salama.check', i=i + 1) }}">Skip {{ icon("arrow-right") }}</a>{% else %}<a class="btn ghost sm" href="{{ url_for('salama.results') }}">See results {{ icon("arrow-right") }}</a>{% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

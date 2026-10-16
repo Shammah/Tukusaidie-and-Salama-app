@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block title %}Services · Tukusaidie{% endblock %}
+{% block content %}
+<div class="stack-lg">
+  <div class="pagehead"><div><h2>All services</h2><p class="muted">Pick an area to see common problems, free fixes and prices.</p></div></div>
+  <form class="search" action="{{ url_for('tuku.home') }}" role="search">
+    {{ icon("search") }}<input type="search" name="q" placeholder="Search a problem…" aria-label="Search a problem" autocomplete="off" data-search="hits">
+  </form>
+  <div id="hits" class="hits"></div>
+  <div class="grid g3">
+    {% for c in C.HELP %}
+    <a class="cat" href="{{ url_for('tuku.category', cat_id=c.id) }}">
+      <span class="ico lg">{{ icon(c.icon) }}</span>
+      <b>{{ c.name }}</b><span class="meta">{{ c.desc }}</span>
+      <span class="tiny muted">{{ c.issues|length }} issues · from {{ ksh(C.BANDS[c.issues|map(attribute='band')|min].fee) }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

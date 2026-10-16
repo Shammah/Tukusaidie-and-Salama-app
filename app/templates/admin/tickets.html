@@ -1,0 +1,23 @@
+{% extends "admin/_layout.html" %}
+{% from "macros.html" import icon, csrf, status_chip, work_chip %}
+{% block admin %}
+<div class="pagehead"><h2>Tickets</h2>
+  <form method="post" action="{{ url_for('admin.auto_assign_all') }}">{{ csrf() }}<button class="btn sm" type="submit">{{ icon("wand-sparkles") }}Auto-assign unassigned</button></form></div>
+<nav class="tabs" aria-label="Filter tickets">
+  {% for k, label in [("all", "All"), ("quote", "Price sent"), ("negotiating", "Negotiating"), ("accepted", "Awaiting payment"), ("paid", "Paid"), ("unassigned", "No agent")] %}
+  <a href="{{ url_for('admin.tickets', status=k) }}" {% if f == k %}aria-current="page"{% endif %}>{{ label }}</a>
+  {% endfor %}
+</nav>
+<div class="stack">
+  {% for t in tickets %}
+  <a class="ticketrow" href="{{ url_for('admin.ticket', tid=t.id) }}">
+    <span class="ico">{{ icon(C.CATS[t.cat_id].icon) }}</span>
+    <span style="min-width:0"><b>{{ t.title }}</b><span class="meta">{{ t.code }} · {{ t.business.name }} · {{ t.priority }} · {{ t.created_at|when }}</span>
+      <span class="trow" style="margin-top:6px">{{ status_chip(t) }}{{ work_chip(t) }}{% if t.agent %}<span class="chip info">{{ t.agent.name }}</span>{% endif %}</span></span>
+    <span class="amt">{{ ksh(t.fee) }}</span>
+  </a>
+  {% else %}
+  <div class="empty">{{ icon("ticket") }}<p>{{ "No tickets with this status." if f != "all" else "No tickets yet. They appear here as soon as a customer raises one." }}</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

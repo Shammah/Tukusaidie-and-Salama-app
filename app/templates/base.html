@@ -1,0 +1,83 @@
+{%- from "macros.html" import icon -%}
+{%- set brand = {"tuku": ("Tukusaidie", "headset", "#F0561D", url_for("tuku.home")),
+                 "salama": ("Salama", "shield-check", "#0E7A49", url_for("salama.overview")),
+                 "portal": ("Tukusaidie & Salama", "sparkles", "#15213B", url_for("customer.index"))}[app] -%}
+<!doctype html>
+<html lang="en" data-app="{{ app }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="{{ brand[2] }}">
+<meta name="csrf" content="{{ csrf_token() }}">
+<meta name="description" content="{% block description %}IT help and cybersecurity checks for Kenyan businesses.{% endblock %}">
+<title>{% block title %}{{ brand[0] }}{% endblock %}</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='{{ brand[2]|replace('#','%23') }}'/%3E%3Cpath d='M9 18v-3a7 7 0 0 1 14 0v3M9 18h3v5H9zM20 18h3v5h-3z' fill='none' stroke='white' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=3">
+</head>
+<body {% block bodyattrs %}{% if role in ("admin", "agent", "shop") %}data-pulse="1"{% endif %}{% endblock %}>
+<header class="topnav"><div class="in">
+  <a class="logo" href="{{ brand[3] }}"><span class="mark">{{ icon(brand[1]) }}</span>{{ brand[0] }}</a>
+  <nav class="navlinks" aria-label="Main">
+    {% block nav %}
+    {% if role == "business" and app == "tuku" %}
+      {% set p = request.path %}
+      <a class="hide-m" href="{{ url_for('tuku.home') }}" {% if p == url_for('tuku.home') %}aria-current="page"{% endif %}>{{ icon("house") }}Home</a>
+      <a class="hide-m" href="{{ url_for('tuku.services') }}" {% if p.startswith('/tukusaidie/services') %}aria-current="page"{% endif %}>{{ icon("layout-grid") }}Services</a>
+      <a class="hide-m" href="{{ url_for('tuku.tickets') }}" {% if p.startswith('/tukusaidie/tickets') %}aria-current="page"{% endif %}>{{ icon("ticket") }}Tickets</a>
+      <a class="hide-m" href="{{ url_for('tuku.chat') }}" {% if p == url_for('tuku.chat') %}aria-current="page"{% endif %}>{{ icon("message-circle") }}Chat</a>
+      <a class="hide-m" href="{{ url_for('salama.overview') }}">{{ icon("shield-check") }}Cyber check</a>
+    {% elif role == "business" and app == "salama" %}
+      <a class="hide-m" href="{{ url_for('salama.overview') }}" {% if request.path == url_for('salama.overview') %}aria-current="page"{% endif %}>{{ icon("gauge") }}Overview</a>
+      <a class="hide-m" href="{{ url_for('salama.results') }}" {% if request.path.startswith('/salama/results') %}aria-current="page"{% endif %}>{{ icon("list-checks") }}Results</a>
+      <a class="hide-m" href="{{ url_for('tuku.home') }}">{{ icon("headset") }}IT helpdesk</a>
+    {% endif %}
+    {% if role == "business" %}
+      <form method="post" action="{{ url_for('customer.logout', next=request.path if app != 'portal' else None) }}"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" title="Sign out {{ me.name }}">{{ icon("log-out") }}<span class="hide-m">Sign out</span></button></form>
+    {% elif role in ("agent", "shop", "admin") %}
+      <form method="post" action="{{ url_for(role ~ '.logout') }}"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit">{{ icon("log-out") }}Sign out</button></form>
+    {% elif app != "portal" %}
+      <a href="{{ url_for('customer.login', next=request.path) }}">Sign in</a>
+    {% endif %}
+    {% endblock %}
+  </nav>
+</div></header>
+
+<main class="{% block mainclass %}{% endblock %}">
+  {% with msgs = get_flashed_messages(with_categories=true) %}{% if msgs %}
+  <div class="flashes" role="status">{% for cat, m in msgs %}<div class="flash {{ 'error' if cat == 'error' else 'ok' }}">{{ icon("circle-alert" if cat == "error" else "circle-check") }}<span>{{ m }}</span></div>{% endfor %}</div>
+  {% endif %}{% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+{% block tabbar %}
+{% if role == "business" and app == "tuku" %}
+{% set p = request.path %}
+<nav class="tabbar" aria-label="Sections">
+  <a href="{{ url_for('tuku.home') }}" {% if p == url_for('tuku.home') %}aria-current="page"{% endif %}>{{ icon("house") }}Home</a>
+  <a href="{{ url_for('tuku.services') }}" {% if p.startswith('/tukusaidie/services') %}aria-current="page"{% endif %}>{{ icon("layout-grid") }}Services</a>
+  <a href="{{ url_for('tuku.tickets') }}" {% if p.startswith('/tukusaidie/tickets') %}aria-current="page"{% endif %}>{{ icon("ticket") }}Tickets</a>
+  <a href="{{ url_for('tuku.chat') }}" {% if p == url_for('tuku.chat') %}aria-current="page"{% endif %}>{{ icon("message-circle") }}Chat</a>
+  <a href="{{ url_for('salama.overview') }}">{{ icon("shield-check") }}Cyber</a>
+</nav>
+{% elif role == "business" and app == "salama" %}
+{% set p = request.path %}
+<nav class="tabbar" aria-label="Sections">
+  <a href="{{ url_for('salama.overview') }}" {% if p == url_for('salama.overview') %}aria-current="page"{% endif %}>{{ icon("gauge") }}Overview</a>
+  <a href="{{ url_for('salama.check') }}" {% if p == url_for('salama.check') %}aria-current="page"{% endif %}>{{ icon("clipboard-list") }}Check</a>
+  <a href="{{ url_for('salama.results') }}" {% if p.startswith('/salama/results') %}aria-current="page"{% endif %}>{{ icon("list-checks") }}Results</a>
+  <a href="{{ url_for('tuku.home') }}">{{ icon("headset") }}Helpdesk</a>
+</nav>
+{% endif %}
+{% endblock %}
+
+<footer class="foot">
+  <span>{{ brand[0] }} · Built for Kenyan businesses</span>
+  <span><a href="{{ url_for('tuku.home') }}">IT helpdesk</a> · <a href="{{ url_for('salama.overview') }}">Cyber check</a> · <a href="{{ url_for('agent.login') }}">Agents</a> · <a href="{{ url_for('shop.login') }}">Shops</a> · <a href="{{ url_for('admin.login') }}">Admin</a></span>
+</footer>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}?v=3"></script>
+</body>
+</html>

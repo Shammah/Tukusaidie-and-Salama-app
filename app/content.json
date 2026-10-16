@@ -1,0 +1,1668 @@
+{
+ "help": [
+  {
+   "id": "net",
+   "name": "Network troubleshooting",
+   "icon": "wifi",
+   "short": "Network",
+   "desc": "Slow, dropping or dead internet and WiFi.",
+   "issues": [
+    {
+     "title": "The internet is crawling",
+     "why": "Usually too many people streaming or a big download hogging the line. Bad weather or something blocking the Starlink dish does it too.",
+     "fix": "Pause big downloads and video, then restart the router. Wait two minutes before judging it.",
+     "band": 2,
+     "steps": [
+      "Ask whether anyone is streaming, uploading or downloading something large, and pause it.",
+      "Restart the router: off for 30 seconds, then on, and wait two minutes.",
+      "Run a speed test and compare it with the speed you pay for.",
+      "If it is slow for everyone at all hours, the line itself needs checking by the provider."
+     ]
+    },
+    {
+     "title": "No internet at all",
+     "why": "The router or Starlink lost power, a cable got kicked loose, or the provider has an outage. Sometimes the bill simply ran out.",
+     "fix": "Check the router lights and the power cable. Try another device. If every device is down, it is the line and not your computer.",
+     "band": 3,
+     "steps": [
+      "Look at the router lights. No lights means a power problem. A red or blinking internet light means the line is down.",
+      "Check that every cable is pushed in fully, including the one from the wall or dish.",
+      "Test a second device. If only one device is offline, the fault is that device.",
+      "Confirm the internet bill is paid, then call the provider with the light pattern you see."
+     ]
+    },
+    {
+     "title": "WiFi connects, then keeps dropping",
+     "why": "You are far from the router, there are thick walls in between, or the router is overloaded and overheating.",
+     "fix": "Move closer, forget the network and join again, and give the router some air.",
+     "band": 2,
+     "steps": [
+      "Stand next to the router. If it is stable there, distance or walls are the cause.",
+      "Forget the network on your device and reconnect with the password.",
+      "Feel the router. If it is hot, move it into open air and restart it.",
+      "Count connected devices. Cheap routers struggle beyond about 15 to 20."
+     ]
+    },
+    {
+     "title": "One device cannot connect while others can",
+     "why": "That device has a wrong saved password, a stuck network setting or its WiFi switched off. Occasionally the router has blocked it.",
+     "fix": "Forget the network on that device and join again, then restart the device.",
+     "band": 1,
+     "steps": [
+      "Check that WiFi is on and aeroplane mode is off on that device.",
+      "Forget the network and reconnect, typing the password carefully.",
+      "Restart the device, then try it on a phone hotspot to prove its WiFi works.",
+      "If it works on the hotspot but not the office WiFi, the router may be blocking it."
+     ]
+    },
+    {
+     "title": "The internet slows at the same time every day",
+     "why": "Scheduled backups or updates, a busy period in the office, or your provider's line being congested at peak hours.",
+     "fix": "Note the times it happens for three days. Check whether a backup or update runs then.",
+     "band": 2,
+     "steps": [
+      "Write down the times it slows for a few days.",
+      "Check whether backups, updates or cloud sync are scheduled at those times.",
+      "Run a speed test during a slow period and again when it is fine.",
+      "Send both results to the agent. A big gap at peak hours points to the provider."
+     ]
+    },
+    {
+     "title": "A network point or cable is dead",
+     "why": "A damaged or unplugged cable, a faulty wall socket or a dead port on the switch.",
+     "fix": "Try the same device and cable on another wall point, then another cable on the same point.",
+     "band": 3,
+     "steps": [
+      "Move the same device and cable to a point you know works.",
+      "Then try a cable you know works on the dead point.",
+      "Look at the switch: no light on that port means the cable run or the port has failed.",
+      "Label the dead point so nobody else wastes time on it."
+     ]
+    },
+    {
+     "title": "Calls and video keep breaking up",
+     "why": "Unstable connection rather than slow speed: weak WiFi, a failing cable or an overloaded router dropping data.",
+     "fix": "Plug the computer in by cable for a call. If it is perfect on cable, the WiFi is the problem.",
+     "band": 2,
+     "steps": [
+      "Join a call using a network cable. Perfect on cable means WiFi is the cause.",
+      "Close cloud sync, downloads and other video while on calls.",
+      "Move nearer the router or use the 5 GHz WiFi band if your router offers it.",
+      "If cable calls also break up, the line or router needs a proper test."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rtr",
+   "name": "Router and WiFi setup",
+   "icon": "wifi",
+   "short": "Router, WiFi",
+   "desc": "New routers, Starlink, WiFi coverage and passwords.",
+   "issues": [
+    {
+     "title": "Set up a new router",
+     "why": "A new office, a new internet provider or an old router that has reached the end of its life.",
+     "fix": "Have the provider's account details and the box the router came in ready. Do not plug in a second router alongside the old one yet.",
+     "band": 3,
+     "steps": [
+      "Unplug the old router fully before the new one is connected.",
+      "Connect the new router to the provider's line and power it on.",
+      "Sign in to its settings page using the address and login on its sticker.",
+      "Set a new admin password, a WiFi name and a strong WiFi password before anyone connects."
+     ]
+    },
+    {
+     "title": "Set up Starlink for the office",
+     "why": "Moving to satellite internet, or adding it as a backup line.",
+     "fix": "Pick a spot with a clear view of the sky and no trees or roof edges above it. The Starlink app has an obstruction check.",
+     "band": 3,
+     "steps": [
+      "Use the Starlink app's obstruction check to choose the dish position.",
+      "Mount the dish firmly. Wind moving it causes dropouts.",
+      "Run the cable so it is not pinched by doors or windows.",
+      "Decide whether Starlink is your main line or a backup. That changes how it connects to your router."
+     ]
+    },
+    {
+     "title": "WiFi does not reach some rooms",
+     "why": "Distance, concrete walls and metal roofing weaken the signal. One router is rarely enough for a whole building.",
+     "fix": "Move the router to a central, raised spot away from walls and metal cabinets.",
+     "band": 3,
+     "steps": [
+      "Walk around with a phone and note where the signal bars drop.",
+      "Move the router to a central, raised position and test again.",
+      "If dead spots remain, you need extra access points, ideally wired back to the router.",
+      "Avoid cheap plug-in repeaters for office work. They halve the speed."
+     ]
+    },
+    {
+     "title": "Create a guest WiFi",
+     "why": "Visitors and customers need internet, but should not be on the same network as your work computers.",
+     "fix": "Check the router's settings page for a Guest network switch. Many routers have one built in.",
+     "band": 1,
+     "steps": [
+      "Sign in to the router's settings page.",
+      "Turn on the Guest network and give it a different name and password.",
+      "Switch on the option that isolates guests from the main network, if there is one.",
+      "Share only the guest password with visitors from now on."
+     ]
+    },
+    {
+     "title": "Change the WiFi name or password",
+     "why": "Too many people know the password, a staff member left, or it is still the default on the sticker.",
+     "fix": "Sign in to the router's settings page, open Wireless and change it there. Every device will need the new password.",
+     "band": 0,
+     "steps": [
+      "Sign in to the router's settings page with the admin login.",
+      "Open the Wireless or WiFi section and enter the new name or password.",
+      "Use at least 12 characters mixing words and numbers.",
+      "Reconnect each work device with the new password and do not write it on the wall."
+     ]
+    },
+    {
+     "title": "I am locked out of the router settings",
+     "why": "The admin password was changed and forgotten, or was never written down.",
+     "fix": "Look for the default login on the router's sticker. Avoid the reset button for now, because it wipes the internet settings too.",
+     "band": 2,
+     "steps": [
+      "Try the default login printed on the router's sticker.",
+      "Ask whoever installed it, or your provider, whether they set the password.",
+      "A factory reset is the last resort: it erases the internet settings, so have the provider's details first.",
+      "After regaining access, set a new admin password and store it safely."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ncfg",
+   "name": "Network configuration",
+   "icon": "nodes",
+   "short": "Network setup",
+   "desc": "Addresses, sharing, separate networks and cabling.",
+   "issues": [
+    {
+     "title": "Two devices are fighting over the same address",
+     "why": "Two devices were given the same IP address, usually because one was set by hand. You see 'IP address conflict' warnings.",
+     "fix": "Restart both devices so the router hands out fresh addresses.",
+     "band": 2,
+     "steps": [
+      "Restart both devices so each asks the router for a fresh address.",
+      "If the warning returns, one of them has an address typed in by hand.",
+      "Set that device back to obtain its address automatically.",
+      "Devices that must keep one address should have it reserved in the router instead."
+     ]
+    },
+    {
+     "title": "Give a printer or server a fixed address",
+     "why": "Printers and servers that change address keep 'disappearing' from everyone's computers.",
+     "fix": "Note the device's current IP address from its network settings page so the agent can reserve it.",
+     "band": 1,
+     "steps": [
+      "Find the device's current address in its network settings.",
+      "Sign in to the router and open the DHCP or address reservation page.",
+      "Reserve that address for the device so it never changes.",
+      "Reconnect any computers that lost the printer and they will keep it this time."
+     ]
+    },
+    {
+     "title": "Share a printer or folder across the office",
+     "why": "Staff need the same printer or files, and emailing documents around has become unworkable.",
+     "fix": "Make sure the computers are on the same WiFi or network, not the guest one.",
+     "band": 2,
+     "steps": [
+      "Confirm every computer is on the same office network.",
+      "For a printer, add it by its network address on each computer.",
+      "For folders, share from one always-on computer or a storage box, with named users.",
+      "Avoid 'Everyone' permissions. Give access per person or per team."
+     ]
+    },
+    {
+     "title": "Separate staff, guest and CCTV networks",
+     "why": "Everything on one flat network means one infected device can reach the accounts computer and the cameras.",
+     "fix": "List what you have: how many computers, cameras, printers and guest users. That decides the design.",
+     "band": 4,
+     "steps": [
+      "List the groups to keep apart: staff, guests, cameras, tills, servers.",
+      "Check your router and switches support VLANs. Basic home routers often do not.",
+      "The agent builds a separate network for each group and sets which may talk to which.",
+      "Each WiFi name is then tied to its own group."
+     ]
+    },
+    {
+     "title": "Reach an office system from outside",
+     "why": "You want to view cameras, a server or the accounts system from home or another branch.",
+     "fix": "Do not open ports yourself by guesswork. An open port is a door for attackers as well as for you.",
+     "band": 2,
+     "steps": [
+      "Say exactly what you need to reach and from where.",
+      "A VPN is the safer route for most cases and is usually what the agent will recommend.",
+      "If a port must be opened, it is limited to specific addresses and a strong password.",
+      "Test from mobile data, never from inside the office."
+     ]
+    },
+    {
+     "title": "Network cabling and new points",
+     "why": "A new office, more desks, or WiFi that will never be stable enough for the work.",
+     "fix": "Sketch the floor with where desks, printers and the router will sit, and count the points you need.",
+     "band": 4,
+     "steps": [
+      "Mark on a sketch where each point is needed.",
+      "The agent measures cable runs and chooses the cable grade and switch size.",
+      "Cables are run, terminated, labelled at both ends and tested.",
+      "You get a simple map of which point goes to which switch port."
+     ]
+    },
+    {
+     "title": "Some websites will not open",
+     "why": "A DNS problem: the service that turns website names into addresses is failing or blocked.",
+     "fix": "Try the same site on mobile data. If it opens there, the fault is on your office network.",
+     "band": 1,
+     "steps": [
+      "Try the site on mobile data to see whether it is only your network.",
+      "Restart the router, which often clears a stuck DNS setting.",
+      "On one computer, switch DNS to a public service to test.",
+      "If that fixes it, the agent changes DNS on the router for everyone."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "fw",
+   "name": "Firewall and VPN",
+   "icon": "wall",
+   "short": "Firewall, VPN",
+   "desc": "Firewalls, website blocking and VPN for remote work.",
+   "issues": [
+    {
+     "title": "Set up a firewall for the office",
+     "why": "The office has grown, handles customer data or payments, or has already had a scare.",
+     "fix": "Count your users and devices and note your internet speed. Those three numbers size the firewall.",
+     "band": 4,
+     "steps": [
+      "Agree what must be protected: accounts system, customer data, payment devices.",
+      "The agent recommends a firewall sized for your users and internet speed.",
+      "It is installed between the internet line and your network, with safe default rules.",
+      "You receive the admin login, a summary of the rules and who to call for changes."
+     ]
+    },
+    {
+     "title": "Block unwanted or risky websites",
+     "why": "Staff time lost to streaming and betting sites, or malware arriving through unsafe downloads.",
+     "fix": "Decide the categories you want blocked and who, if anyone, should be exempt.",
+     "band": 2,
+     "steps": [
+      "Agree the categories to block and any exceptions.",
+      "Filtering is switched on at the router or firewall so it covers every device.",
+      "Test with a blocked site and an allowed one.",
+      "Review the list after two weeks, since legitimate sites are sometimes caught."
+     ]
+    },
+    {
+     "title": "A program is being blocked by the firewall",
+     "why": "A new program or an update needs a connection the firewall does not recognise, so it is stopped.",
+     "fix": "Note the exact program name and the error message, and when it last worked.",
+     "band": 1,
+     "steps": [
+      "Note the program, the error and when it last worked.",
+      "The agent checks the firewall log to see exactly what was blocked.",
+      "A narrow rule is added for that program only, not a general opening.",
+      "You test, and the rule is recorded with the reason it exists."
+     ]
+    },
+    {
+     "title": "Staff need a VPN to work from home",
+     "why": "People need office files and systems from home or on the road, safely.",
+     "fix": "List who needs remote access and which systems. Not everyone needs everything.",
+     "band": 2,
+     "steps": [
+      "List the people and the systems they need from home.",
+      "The agent sets up the VPN on the firewall or router with a login per person.",
+      "Each laptop or phone gets the VPN app and two-step verification.",
+      "Access is removed the day someone leaves."
+     ]
+    },
+    {
+     "title": "Link two branches securely",
+     "why": "Two offices need to share files, printers or one accounts system as if they were in one building.",
+     "fix": "Note the internet provider and router model at each branch.",
+     "band": 4,
+     "steps": [
+      "The agent checks the router or firewall at each branch can build a tunnel.",
+      "A secure link is configured between the two sites.",
+      "Rules decide which systems each branch can reach.",
+      "Both ends are tested for speed and for recovery after a power cut."
+     ]
+    },
+    {
+     "title": "Review my firewall rules",
+     "why": "Rules pile up over the years. Old openings left for former suppliers are a common way in.",
+     "fix": "Find out who set the firewall up and whether anyone still has the admin login.",
+     "band": 2,
+     "steps": [
+      "The agent exports the current rules and port openings.",
+      "Each rule is checked: who needs it, and is it still used.",
+      "Unused and over-wide rules are removed or tightened.",
+      "You get a short report of what changed and why."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "srv",
+   "name": "Servers and storage",
+   "icon": "server",
+   "short": "Servers",
+   "desc": "Shared drives, backups and servers.",
+   "issues": [
+    {
+     "title": "The shared drive or NAS is unreachable",
+     "why": "The storage box lost power or network, its address changed, or a disk inside has failed.",
+     "fix": "Check its power and network lights, then restart your own computer before anything else.",
+     "band": 2,
+     "steps": [
+      "Check the storage box has power and its network light is on.",
+      "Restart your computer and try again by its network address.",
+      "If one person is locked out, it is a permissions issue. If everyone is, it is the box or network.",
+      "A clicking sound or red disk light means stop and raise a ticket at once."
+     ]
+    },
+    {
+     "title": "Set up automatic backups",
+     "why": "Backups done by hand get forgotten, usually just before the day they are needed.",
+     "fix": "Decide which folders matter most and how much work you could afford to lose: a day, or a week.",
+     "band": 2,
+     "steps": [
+      "Pick the folders and systems that must be backed up.",
+      "Choose where copies go: a storage box in the office and one copy off-site or in the cloud.",
+      "The agent schedules the backup to run automatically, usually at night.",
+      "A test restore is done so you know it works."
+     ]
+    },
+    {
+     "title": "The server will not start",
+     "why": "A failed disk or power supply, a bad update, or damage from a power surge.",
+     "fix": "Do not keep forcing it on. Note any beeps, lights or messages on the screen.",
+     "band": 4,
+     "steps": [
+      "Check the power cable, socket and UPS first.",
+      "Note any error on the screen, beeps or coloured lights.",
+      "Do not reinstall or reset anything, as that can destroy data.",
+      "The agent diagnoses on-site and recovers data before any repair."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cctv",
+   "name": "CCTV and office devices",
+   "icon": "video",
+   "short": "CCTV",
+   "desc": "Cameras, phone viewing and attendance devices.",
+   "issues": [
+    {
+     "title": "Cameras are offline",
+     "why": "Power to the camera or recorder is off, a cable is damaged, or the recorder's disk is full or failed.",
+     "fix": "Check the recorder is on and its cables are firm. See whether one camera or all of them are down.",
+     "band": 3,
+     "steps": [
+      "Check whether one camera or all are down.",
+      "One camera: check its cable and power at both ends.",
+      "All cameras: check the recorder's power and its disk status in the menu.",
+      "Note when recording stopped, in case footage from that period is needed."
+     ]
+    },
+    {
+     "title": "I cannot view cameras on my phone",
+     "why": "The recorder lost its internet connection, the app login changed, or remote viewing was never set up properly.",
+     "fix": "Check you can see the cameras on the recorder's own screen first. If yes, only remote viewing is broken.",
+     "band": 2,
+     "steps": [
+      "Confirm the cameras show on the recorder's own screen.",
+      "Check the recorder's network cable and that the internet is working.",
+      "Sign out and back in to the viewing app with the correct account.",
+      "If it still fails, the agent re-links the recorder to the app."
+     ]
+    },
+    {
+     "title": "The attendance or biometric device is not syncing",
+     "why": "It has dropped off the network, its address changed, or the software on the computer was updated.",
+     "fix": "Restart the device and check the network cable or WiFi icon on its screen.",
+     "band": 3,
+     "steps": [
+      "Restart the device and check it shows a network connection.",
+      "Confirm the computer with the attendance software is on the same network.",
+      "Check the device's address has not changed in its network menu.",
+      "The agent re-links it and reserves its address so it stays put."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "web",
+   "name": "Website, domain and business email",
+   "icon": "globe",
+   "short": "Website",
+   "desc": "Website down, domains and company email.",
+   "issues": [
+    {
+     "title": "Our website is down",
+     "why": "Hosting or the domain has expired, the hosting company has an outage, or a bad update broke the site.",
+     "fix": "Open the site on mobile data to confirm it is down for everyone and not only in your office.",
+     "band": 2,
+     "steps": [
+      "Test on mobile data to confirm it is down for everyone.",
+      "Check for renewal or suspension emails from the hosting company.",
+      "Sign in to the hosting account, if you have the login, and look for notices.",
+      "The agent traces whether the fault is the domain, the hosting or the site itself."
+     ]
+    },
+    {
+     "title": "Our domain has expired or is about to",
+     "why": "Renewal reminders went to an old email address or the card on file failed.",
+     "fix": "Find out who registered it and where. Renew quickly: expired domains can be bought by someone else.",
+     "band": 1,
+     "steps": [
+      "Find the registrar from old invoices or emails.",
+      "Sign in and renew straight away, for more than one year if you can.",
+      "Turn on auto-renew and update the contact email.",
+      "If it has already lapsed, the agent helps with recovery, which can cost more the longer it is left."
+     ]
+    },
+    {
+     "title": "Set up business email on our own domain",
+     "why": "Staff are using personal Gmail or Yahoo addresses, which looks unprofessional and leaves with them.",
+     "fix": "Decide the addresses you need, for example info@ and accounts@, and who will own each.",
+     "band": 2,
+     "steps": [
+      "Choose the provider, for example Google Workspace or Microsoft 365.",
+      "The agent verifies your domain with the provider.",
+      "Mail records are changed so email arrives in the new mailboxes.",
+      "Each person gets an account, a strong password and two-step verification."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mail",
+   "name": "Email and accounts",
+   "icon": "mail",
+   "short": "Email",
+   "desc": "Passwords, locked accounts and missing email.",
+   "issues": [
+    {
+     "title": "I forgot my password",
+     "why": "It happens after a holiday, a forced password change or one too many similar passwords.",
+     "fix": "Use the Forgot password link on the sign-in page. If two-step verification is blocking you, raise a ticket.",
+     "band": 0,
+     "steps": [
+      "Open the sign-in page and choose Forgot password.",
+      "Follow the code sent to your recovery phone or email.",
+      "Choose a new password you have not used before.",
+      "Update it on your phone and tablet straight away."
+     ]
+    },
+    {
+     "title": "My account is locked",
+     "why": "Too many wrong password attempts, often from an old phone still trying the previous password.",
+     "fix": "Wait 15 minutes, then try once carefully. Update the password on your phone and tablet too.",
+     "band": 0,
+     "steps": [
+      "Stop trying for 15 minutes so the lock can clear.",
+      "Check Caps Lock and type the password slowly once.",
+      "Update the password on every device that checks your mail.",
+      "If it locks again quickly, an old device or someone else is trying it."
+     ]
+    },
+    {
+     "title": "Emails are not sending or arriving",
+     "why": "A full mailbox, an attachment that is too large, or a wrong address. Missing mail often lands in spam.",
+     "fix": "Check Spam and the Outbox, shrink the attachment, and confirm the address letter by letter.",
+     "band": 1,
+     "steps": [
+      "Look in Spam for missing mail and in Outbox for stuck mail.",
+      "Check your mailbox is not full and delete large old messages.",
+      "Send large files as a shared link instead of an attachment.",
+      "Ask the other person to check the address they used."
+     ]
+    },
+    {
+     "title": "I need a new email or shared mailbox",
+     "why": "A new starter, a new project or a role that needs a team address.",
+     "fix": "Raise a ticket with the name, the role and the manager who approved it.",
+     "band": 1,
+     "steps": [
+      "Decide the address name and who will use it.",
+      "Get your manager's approval.",
+      "The agent creates it and sets who can read and send.",
+      "You sign in and change the temporary password."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pc",
+   "name": "Computers and laptops",
+   "icon": "laptop",
+   "short": "Computers",
+   "desc": "Slow, overheating or dead computers.",
+   "issues": [
+    {
+     "title": "My computer is painfully slow",
+     "why": "Too many programs opening at startup, a nearly full disk, or weeks without a restart. Sometimes an update is working in the background.",
+     "fix": "Restart it properly, close browser tabs you are not using, and clear your Downloads folder.",
+     "band": 2,
+     "steps": [
+      "Restart, do not only close the lid.",
+      "Close programs and browser tabs you are not using.",
+      "Free up disk space: empty the bin and clear Downloads.",
+      "If it is slow from the moment it starts, too many programs launch at startup."
+     ]
+    },
+    {
+     "title": "It will not turn on",
+     "why": "A flat battery, a loose or faulty charger, or a power surge. Laptops also sulk after a hard knock.",
+     "fix": "Try a different socket and charger. Hold the power button for 15 seconds, release, then press once.",
+     "band": 3,
+     "steps": [
+      "Try another socket and, if possible, another charger.",
+      "Hold the power button for 15 seconds, release, then press once.",
+      "Unplug everything attached and try again.",
+      "A charging light with no screen points to the display, not the power."
+     ]
+    },
+    {
+     "title": "Blue screen or sudden restarts",
+     "why": "A faulty driver after an update, overheating from blocked vents, or failing memory or disk.",
+     "fix": "Write down or photograph the error code, let the machine cool, and raise a ticket with the photo.",
+     "band": 4,
+     "steps": [
+      "Photograph the error screen, including the code.",
+      "Recall what changed: a new device, program or update.",
+      "Let the machine cool, then restart.",
+      "If it happens more than once, stop using it for important work until it is checked."
+     ]
+    },
+    {
+     "title": "The laptop is hot and the fan is loud",
+     "why": "Dust in the vents, working on a bed or sofa, or one program stuck using all the power.",
+     "fix": "Put it on a hard flat surface, close heavy programs and restart.",
+     "band": 3,
+     "steps": [
+      "Move it to a hard, flat surface so the vents are clear.",
+      "Close heavy programs and restart.",
+      "Listen for the fan. No fan sound with high heat needs a technician.",
+      "Dust build-up is cleaned by opening the machine, which is a job for the agent."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "print",
+   "name": "Printers and scanners",
+   "icon": "printer",
+   "short": "Printers",
+   "desc": "Printing, paper jams, faint prints and scanning.",
+   "issues": [
+    {
+     "title": "Nothing comes out when I print",
+     "why": "The printer is offline, the job went to a different printer, or an earlier job is stuck in the queue.",
+     "fix": "Check you picked the right printer, cancel all waiting jobs, then switch the printer off and on.",
+     "band": 1,
+     "steps": [
+      "Check the printer is on, has paper and shows no error.",
+      "Confirm you chose the right printer in the print window.",
+      "Open the print queue and cancel every waiting job.",
+      "Turn the printer off and on, then print one test page."
+     ]
+    },
+    {
+     "title": "Paper jam",
+     "why": "Damp or crumpled paper, an overfilled tray, or worn rollers. Humid days make it worse.",
+     "fix": "Switch it off, pull the paper out gently in the direction it travels, and reload with a fresh, fanned stack.",
+     "band": 3,
+     "steps": [
+      "Switch the printer off.",
+      "Open the covers and pull the paper gently in the direction it travels.",
+      "Check for torn scraps left inside.",
+      "Reload with a fresh, fanned stack and do not overfill the tray."
+     ]
+    },
+    {
+     "title": "Prints are faint or streaky",
+     "why": "Toner or ink is running low, or the cartridge needs a shake or a clean.",
+     "fix": "Take the toner out, rock it side to side and refit. Run the cleaning cycle from the printer menu.",
+     "band": 3,
+     "steps": [
+      "Remove the toner or ink cartridge and rock it gently side to side.",
+      "Refit it firmly until it clicks.",
+      "Run the cleaning cycle from the printer's menu.",
+      "If prints are still faint, the cartridge needs replacing."
+     ]
+    },
+    {
+     "title": "Scan to email stopped working",
+     "why": "The email password the printer uses was changed, or the address book entry is wrong.",
+     "fix": "Scan to a USB stick for now and raise a ticket so IT can update the printer's email settings.",
+     "band": 2,
+     "steps": [
+      "Scan to a USB stick so work can continue.",
+      "Check whether the email password the printer uses was changed recently.",
+      "The agent updates the printer's mail settings.",
+      "A test scan is sent to confirm."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "apps",
+   "name": "Software and apps",
+   "icon": "app",
+   "short": "Software",
+   "desc": "Installs, errors, crashes and licences.",
+   "issues": [
+    {
+     "title": "I need a program installed",
+     "why": "A new task, a new role or a file type your computer cannot open yet.",
+     "fix": "Raise a ticket naming the program and what you need it for. Please do not download cracked copies.",
+     "band": 1,
+     "steps": [
+      "Name the program and what you need it for.",
+      "Get approval if it costs money.",
+      "The agent checks it is safe and properly licensed.",
+      "It is installed remotely and tested with you."
+     ]
+    },
+    {
+     "title": "The ERP or accounts system shows an error",
+     "why": "A lost connection, a session that timed out, or missing permission for that screen.",
+     "fix": "Refresh, sign out and back in, and screenshot the exact error if it returns.",
+     "band": 2,
+     "steps": [
+      "Refresh the page and try again.",
+      "Sign out and back in.",
+      "Screenshot the exact error and note what you were doing.",
+      "Check whether colleagues see the same thing. If so, it is the system, not you."
+     ]
+    },
+    {
+     "title": "A program keeps freezing or crashing",
+     "why": "It needs an update, the file is very large, or the computer is short of memory.",
+     "fix": "Save your work, close other programs, restart the app and install pending updates.",
+     "band": 2,
+     "steps": [
+      "Save your work if you can.",
+      "Close other programs to free memory.",
+      "Install pending updates for that program.",
+      "If one file causes it, the file may be damaged or too large."
+     ]
+    },
+    {
+     "title": "It says my licence has expired",
+     "why": "The subscription ran out or was moved to another user.",
+     "fix": "Raise a ticket with the program name and the exact message. Keep working in the web version if there is one.",
+     "band": 1,
+     "steps": [
+      "Note the program and the exact message.",
+      "Check whether a renewal email arrived.",
+      "Use the web version, if there is one, to keep working.",
+      "The agent confirms the subscription and reassigns the licence."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mobile",
+   "name": "Phones and M-Pesa devices",
+   "icon": "phone",
+   "short": "Phones, M-Pesa",
+   "desc": "Work phones, till phones and SIM problems.",
+   "issues": [
+    {
+     "title": "The work phone will not sync email",
+     "why": "The password was changed on the computer but not the phone, or mobile data is off or finished.",
+     "fix": "Open the mail app, re-enter the new password and check your data bundle.",
+     "band": 0,
+     "steps": [
+      "Open the mail app's account settings.",
+      "Enter the new password.",
+      "Check mobile data or WiFi is on and working.",
+      "Remove and re-add the account if it still will not sync."
+     ]
+    },
+    {
+     "title": "The till phone is not receiving M-Pesa messages",
+     "why": "A full message inbox, weak signal, or the SIM has shifted in the tray. Network delays also happen at peak hours.",
+     "fix": "Delete old messages, restart the phone and check the balance from the M-Pesa menu instead of waiting for SMS.",
+     "band": 2,
+     "steps": [
+      "Delete old messages to free inbox space.",
+      "Restart the phone and check signal bars.",
+      "Check the balance from the M-Pesa menu instead of waiting for the SMS.",
+      "Take the SIM out, wipe it gently and refit it."
+     ]
+    },
+    {
+     "title": "The SIM suddenly shows no service",
+     "why": "A damaged SIM, an unpaid line or, in the worst case, a fraudulent SIM swap.",
+     "fix": "Treat it as urgent. Call your mobile provider from another phone straight away and raise an urgent ticket.",
+     "band": 2,
+     "steps": [
+      "Restart the phone and check aeroplane mode is off.",
+      "Try the SIM in another phone.",
+      "If it shows no service there too, call the provider from another line immediately.",
+      "Ask them directly whether a SIM swap was done. If yes, treat it as fraud."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sec",
+   "name": "Security worries",
+   "icon": "shield",
+   "short": "Security",
+   "desc": "Suspicious messages, viruses and lost devices.",
+   "issues": [
+    {
+     "title": "I got a suspicious email or message",
+     "why": "Scammers send thousands of these, hoping one person clicks. Your address may be on a leaked list.",
+     "fix": "Do not click, reply or open attachments. Forward it to IT and delete it.",
+     "band": 0,
+     "steps": [
+      "Do not click links, open attachments or reply.",
+      "Check the sender's real address, not only the display name.",
+      "Forward it to IT, then delete it.",
+      "Warn colleagues if it looks aimed at your company."
+     ]
+    },
+    {
+     "title": "I think I clicked a bad link",
+     "why": "The message looked real. That is exactly what the people who write them are good at.",
+     "fix": "Disconnect from WiFi, change your password from another device and raise an urgent ticket. Nobody will be cross.",
+     "band": 4,
+     "steps": [
+      "Disconnect that device from WiFi or unplug its cable.",
+      "From a different device, change your password.",
+      "Tell IT at once, with the time and what you clicked.",
+      "Do not use the affected device until it has been checked."
+     ]
+    },
+    {
+     "title": "Antivirus found something, or pop-ups everywhere",
+     "why": "A dodgy download, a cracked program or an infected flash disk.",
+     "fix": "Leave the antivirus to finish, do not plug in any USB sticks, and raise a ticket.",
+     "band": 3,
+     "steps": [
+      "Let the antivirus finish and note the name of what it found.",
+      "Do not plug in USB sticks or open downloads.",
+      "Restart only when the scan says it is safe.",
+      "The agent checks whether anything else was affected."
+     ]
+    },
+    {
+     "title": "I lost my laptop or phone",
+     "why": "Left in a matatu, a taxi or a meeting room, or stolen.",
+     "fix": "Raise an urgent ticket now so IT can lock it and reset your passwords. Tell us where and when you last had it.",
+     "band": 4,
+     "steps": [
+      "Report it immediately with where and when you last had it.",
+      "IT locks or wipes the device remotely if that is set up.",
+      "Change your email and system passwords.",
+      "For a phone, call the mobile provider to block the SIM."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "people",
+   "name": "New starters and leavers",
+   "icon": "userplus",
+   "short": "Joiners, leavers",
+   "desc": "Accounts and access for joiners and leavers.",
+   "issues": [
+    {
+     "title": "Someone new is joining",
+     "why": "A new hire needs accounts, a device and access before day one.",
+     "fix": "Raise a ticket at least three working days ahead with name, role, start date and the systems they need.",
+     "band": 2,
+     "steps": [
+      "Send the name, role, start date and manager at least three days ahead.",
+      "List the systems and folders they need.",
+      "The agent creates accounts and prepares a device.",
+      "On day one they sign in, change passwords and set up two-step verification."
+     ]
+    },
+    {
+     "title": "Someone is leaving",
+     "why": "Access left open after a person leaves is a risk to them and to the business.",
+     "fix": "Raise a ticket with their last working day so accounts are closed and equipment collected.",
+     "band": 1,
+     "steps": [
+      "Tell IT the last working day as soon as it is known.",
+      "List what they had: laptop, phone, access cards.",
+      "Accounts are disabled at the end of the last day.",
+      "Their mail and files are handed to the manager."
+     ]
+    },
+    {
+     "title": "I need access to a system or folder",
+     "why": "A new responsibility, a project move or cover for a colleague.",
+     "fix": "Raise a ticket naming the system and the manager who approved it.",
+     "band": 1,
+     "steps": [
+      "Name the system or folder and why access is needed.",
+      "Get the owner's or manager's approval.",
+      "The agent grants the minimum needed.",
+      "Say when it is no longer needed so it can be removed."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "hw",
+   "name": "Equipment requests",
+   "icon": "box",
+   "short": "Equipment",
+   "desc": "New or replacement equipment and repairs.",
+   "issues": [
+    {
+     "title": "I need a new mouse, keyboard or headset",
+     "why": "Wear and tear, a spill, or one that simply walked away.",
+     "fix": "Raise a ticket saying what you need and whether the old one is broken.",
+     "band": 0,
+     "steps": [
+      "Say what you need and whether the old one is broken.",
+      "Hand in the faulty item if asked.",
+      "The agent issues a replacement from stock or orders one.",
+      "It is recorded against your name."
+     ]
+    },
+    {
+     "title": "My screen is cracked or flickering",
+     "why": "A drop, pressure in a bag, a loose cable or a tired display.",
+     "fix": "Check the cable is firmly in at both ends. If the laptop screen itself is cracked, raise a ticket with a photo.",
+     "band": 3,
+     "steps": [
+      "Check the cable at both ends, or try another cable.",
+      "Connect another screen to see whether the laptop itself is fine.",
+      "Photograph the damage.",
+      "The agent quotes for repair or replacement. Parts are charged separately."
+     ]
+    },
+    {
+     "title": "I need a laptop or replacement",
+     "why": "A new role, an ageing machine or one beyond repair.",
+     "fix": "Raise a ticket with your manager's approval and what you use the machine for.",
+     "band": 1,
+     "steps": [
+      "Describe the work you do and the programs you use.",
+      "Get your manager's approval.",
+      "The agent recommends a specification and price.",
+      "Your files and settings are moved across from the old machine."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "files",
+   "name": "Files and backup",
+   "icon": "folder",
+   "short": "Files, backup",
+   "desc": "Deleted files, shared folders and full storage.",
+   "issues": [
+    {
+     "title": "I deleted a file by mistake",
+     "why": "A slip of the finger, or a tidy-up that went one folder too far.",
+     "fix": "Check the Recycle Bin or Drive Bin first. Deleted files usually wait there for about 30 days.",
+     "band": 1,
+     "steps": [
+      "Open the Recycle Bin or Drive Bin.",
+      "Search for the file name, then restore it.",
+      "If it is not there, check with whoever shares the folder.",
+      "Older deletions may need restoring from backup, which the agent can do."
+     ]
+    },
+    {
+     "title": "I cannot open a shared folder",
+     "why": "You were never added, the folder moved, or your sign-in expired.",
+     "fix": "Ask the folder owner to share it again, or raise a ticket with the folder name.",
+     "band": 0,
+     "steps": [
+      "Check you are signed in with your work account.",
+      "Ask the folder owner to share it with you again.",
+      "Try opening it from the link they send.",
+      "If the folder was moved, the agent finds the new location."
+     ]
+    },
+    {
+     "title": "My storage is full",
+     "why": "Videos, duplicate downloads and years of attachments add up quietly.",
+     "fix": "Empty the bin, clear Downloads and move old projects to the shared archive.",
+     "band": 1,
+     "steps": [
+      "Empty the bin.",
+      "Sort files by size and delete or move the largest.",
+      "Clear Downloads and duplicate videos.",
+      "Move old projects to the shared archive."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "av",
+   "name": "Meetings and video calls",
+   "icon": "video",
+   "short": "Meetings",
+   "desc": "Sound, projectors and choppy video calls.",
+   "issues": [
+    {
+     "title": "Nobody can hear me on the call",
+     "why": "The wrong microphone is selected, you are muted, or the browser has no microphone permission.",
+     "fix": "Check the mute button, then pick the right microphone in the call settings.",
+     "band": 0,
+     "steps": [
+      "Check the mute button in the call and on the headset.",
+      "Open the call's audio settings and choose the right microphone.",
+      "Allow microphone access when the browser asks.",
+      "Rejoin the call, or restart the computer if it still fails."
+     ]
+    },
+    {
+     "title": "The projector or TV shows nothing",
+     "why": "The wrong input is selected, a loose HDMI cable, or the laptop is not set to share its screen.",
+     "fix": "Reseat the cable, pick the right HDMI input and press Windows + P to choose Duplicate.",
+     "band": 3,
+     "steps": [
+      "Check both ends of the HDMI cable.",
+      "Choose the correct HDMI input on the projector or TV.",
+      "Press Windows + P and choose Duplicate.",
+      "Try another cable or laptop to find which part is at fault."
+     ]
+    },
+    {
+     "title": "Video calls keep freezing",
+     "why": "A weak connection, many people on the same WiFi, or too many programs open.",
+     "fix": "Turn your camera off, move closer to the router and close other apps.",
+     "band": 1,
+     "steps": [
+      "Turn your camera off to save bandwidth.",
+      "Move closer to the router or plug in a cable.",
+      "Close other programs and browser tabs.",
+      "Ask others on the WiFi to pause heavy downloads during the call."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "power",
+   "name": "Power and UPS",
+   "icon": "bolt",
+   "short": "Power, UPS",
+   "desc": "A beeping UPS and equipment after blackouts.",
+   "issues": [
+    {
+     "title": "The UPS is beeping",
+     "why": "It is running on battery because mains power dropped, or its battery is near the end of its life.",
+     "fix": "Save your work now. If mains power is fine and it still beeps, raise a ticket for a battery check.",
+     "band": 3,
+     "steps": [
+      "Save your work straight away.",
+      "Check whether mains power is actually off.",
+      "If mains is fine and it still beeps, note the pattern and any warning light.",
+      "The battery usually needs replacing every two to three years."
+     ]
+    },
+    {
+     "title": "Equipment died after a blackout",
+     "why": "A power surge when electricity came back, or a tripped extension.",
+     "fix": "Check the socket and extension switch. Do not keep forcing the power button. Raise a ticket.",
+     "band": 4,
+     "steps": [
+      "Check the socket with another device.",
+      "Check the extension switch and any tripped breaker.",
+      "Unplug the equipment and leave it for a few minutes before one more try.",
+      "Do not keep forcing it. Surge damage needs a technician."
+     ]
+    }
+   ]
+  }
+ ],
+ "top": [
+  "net",
+  "print",
+  "pc",
+  "mail",
+  "fw",
+  "srv",
+  "cctv"
+ ],
+ "bands": [
+  {
+   "name": "Featherweight",
+   "fee": 50,
+   "what": "Quick fix by chat or phone"
+  },
+  {
+   "name": "Lightweight",
+   "fee": 150,
+   "what": "Remote account or setup work"
+  },
+  {
+   "name": "Middleweight",
+   "fee": 400,
+   "what": "Remote troubleshooting session"
+  },
+  {
+   "name": "Heavyweight",
+   "fee": 800,
+   "what": "On-site visit and physical check"
+  },
+  {
+   "name": "Super heavyweight",
+   "fee": 1500,
+   "what": "On-site investigation, hardware fault or security incident"
+  }
+ ],
+ "band_advice": [
+  "Fix it yourself with the quick fix. Still stuck? Raise a ticket.",
+  "Try the quick fix. If it fails, an agent can fix it remotely.",
+  "An agent can fix this remotely through a ticket.",
+  "Needs hands-on work: book an agent visit or use a nearby shop.",
+  "Serious fault: stop using it and raise an urgent ticket, or visit a nearby shop."
+ ],
+ "priorities": [
+  [
+   "Low",
+   "It can wait"
+  ],
+  [
+   "Normal",
+   "It is slowing me down"
+  ],
+  [
+   "Urgent",
+   "Work has stopped"
+  ]
+ ],
+ "certs": [
+  "CompTIA A+",
+  "CompTIA Network+",
+  "CompTIA Security+",
+  "Cisco CCNA",
+  "Microsoft certification",
+  "Google IT Support Certificate",
+  "ITIL Foundation",
+  "Diploma or degree in IT"
+ ],
+ "sections": [
+  {
+   "id": "net",
+   "name": "Network and WiFi",
+   "icon": "wifi",
+   "large": false,
+   "qs": [
+    {
+     "action": "Change the WiFi password from the default",
+     "text": "Is your office WiFi protected by a strong password that is different from the one printed on the router?",
+     "why": "Default router passwords are easy to look up. Anyone in range can join your network.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Change the router or Starlink admin login",
+     "text": "Has the admin login for your router or Starlink kit been changed from the factory default?",
+     "why": "Whoever controls the router can watch or redirect all your traffic.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Set up a separate guest WiFi",
+     "text": "Do visitors and customers use a separate guest WiFi from the one your work devices use?",
+     "why": "A visitor's infected phone should never sit on the same network as your accounts computer.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Switch on the firewall",
+     "text": "Is a firewall switched on at your internet connection?",
+     "why": "A firewall blocks unwanted connections from the internet before they reach your devices.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Give remote staff a secure connection",
+     "text": "Do staff use a VPN or other secure connection when working from home, a cyber cafe or public WiFi?",
+     "why": "Public WiFi can be read by others. A VPN keeps work traffic private.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Segment the network",
+     "text": "Is your network split so guest, staff, server and CCTV traffic are kept apart?",
+     "why": "Segments stop one infected device from reaching everything else.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Monitor network alerts",
+     "text": "Does someone review network logs or alerts for unusual activity?",
+     "why": "Most break-ins leave traces days before the damage. Someone has to be looking.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "acc",
+   "name": "Accounts and passwords",
+   "icon": "lock",
+   "large": false,
+   "qs": [
+    {
+     "action": "Turn on two-step verification for email",
+     "text": "Do all staff use two-step verification on work email?",
+     "why": "Also called 2FA or MFA. A stolen password alone is then not enough to get in.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Remove leavers' accounts the same day",
+     "text": "Are accounts disabled on the day a staff member leaves?",
+     "why": "Old accounts are a favourite way back in, for outsiders and unhappy former staff.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Give every person their own login",
+     "text": "Does each staff member have their own login, with no shared accounts?",
+     "why": "With shared logins you cannot tell who did what, or remove one person's access.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Use unique passwords or a password manager",
+     "text": "Do staff use a password manager or a different password for each system?",
+     "why": "One reused password leaked from another site can open every system you have.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Limit admin rights",
+     "text": "Are admin rights limited to the few people who need them?",
+     "why": "Malware runs with the rights of whoever opened it. Fewer admins means less damage.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Adopt single sign-on",
+     "text": "Do you use single sign-on or central identity management?",
+     "why": "One place to add, change and remove access is far easier to keep right.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Review access rights regularly",
+     "text": "Are access rights reviewed at least every 6 months?",
+     "why": "People change roles and keep old access unless someone checks.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "staff",
+   "name": "Staff awareness",
+   "icon": "users",
+   "large": false,
+   "qs": [
+    {
+     "action": "Teach staff to spot phishing",
+     "text": "Can staff spot phishing emails and scam messages on WhatsApp and SMS?",
+     "why": "Most attacks start with a message that tricks a person, not a technical break-in.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Verify changes to payment details by phone",
+     "text": "Do you confirm any request to change a supplier's bank or paybill details by calling a number you already know?",
+     "why": "Fraudsters send convincing emails asking you to pay a \"new\" account.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Run yearly security training",
+     "text": "Have staff had cybersecurity training in the last 12 months?",
+     "why": "Scams change every year. Training keeps people current.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Name a person to report to",
+     "text": "Do staff know who to tell when they see something suspicious?",
+     "why": "A quick report can stop an attack. Silence lets it spread.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Brief new staff in week one",
+     "text": "Are new staff briefed on security rules in their first week?",
+     "why": "New starters are targeted because they do not yet know what normal looks like.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Run phishing simulations",
+     "text": "Do you run simulated phishing tests?",
+     "why": "Practice with safe fake emails shows who needs more help.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "dev",
+   "name": "Devices and updates",
+   "icon": "laptop",
+   "large": false,
+   "qs": [
+    {
+     "action": "Turn on automatic updates",
+     "text": "Are computers and phones set to install updates automatically?",
+     "why": "Updates close holes that attackers already know how to use.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Install antivirus on every computer",
+     "text": "Is antivirus protection active on every computer?",
+     "why": "It catches most common malware before it runs.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Replace cracked software",
+     "text": "Is all your software properly licensed, with no cracked copies?",
+     "why": "Cracked software is a leading source of malware and gets no security updates.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Lock every device",
+     "text": "Do all work phones and laptops lock with a PIN, password or fingerprint?",
+     "why": "An unlocked lost phone hands over email, files and payment apps.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Encrypt laptops and phones",
+     "text": "Are laptops and phones encrypted?",
+     "why": "Encryption keeps data unreadable if the device is stolen.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Keep a device register",
+     "text": "Do you keep a list of company devices and who holds each one?",
+     "why": "You cannot protect or recover what you do not know you own.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Control USB sticks",
+     "text": "Is the use of personal USB sticks controlled or scanned?",
+     "why": "Flash disks carry malware between home, cyber cafes and the office.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Set up remote lock and wipe",
+     "text": "Can you remotely lock or wipe a lost device?",
+     "why": "Device management lets you protect data after a device is gone.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "bak",
+   "name": "Backups and recovery",
+   "icon": "cloud",
+   "large": false,
+   "qs": [
+    {
+     "action": "Back up important files automatically",
+     "text": "Are important files backed up automatically at least once a week?",
+     "why": "Ransomware, theft or a failed disk can wipe out years of records.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Keep one backup offsite or offline",
+     "text": "Is one backup copy kept away from the office or offline?",
+     "why": "Fire, theft or ransomware can take the backup too if it sits next to the original.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Test a restore",
+     "text": "Have you tested restoring from a backup in the last 6 months?",
+     "why": "A backup you have never restored is only a hope.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Include accounting and POS records",
+     "text": "Are your accounting, ERP or point-of-sale records included in the backup?",
+     "why": "These are the records the business and KRA will ask for first.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Prepare for power and internet outages",
+     "text": "Can you keep working through a power or internet outage?",
+     "why": "A UPS and a second connection keep sales and records running.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Write a recovery plan",
+     "text": "Do you have a written recovery plan with target times?",
+     "why": "It tells everyone what to restore first and how long it should take.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "mpesa",
+   "name": "M-Pesa and mobile payments",
+   "icon": "phone",
+   "large": false,
+   "qs": [
+    {
+     "action": "Restrict who knows the M-Pesa PIN",
+     "text": "Is your M-Pesa PIN known only to authorised people and never shared by call, SMS or WhatsApp?",
+     "why": "Nobody genuine will ever ask for your PIN, including callers who say they are from Safaricom.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Confirm payments on your own line",
+     "text": "Do staff confirm each payment on your own till, app or statement before releasing goods?",
+     "why": "Fake confirmation SMS and edited screenshots are a common way to steal stock.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Refuse reversal requests by phone",
+     "text": "Do staff know not to send money back when a caller claims a payment was sent by mistake?",
+     "why": "In this scam the \"mistaken\" payment was never real, or is reversed again afterwards.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Protect the business line from SIM swap",
+     "text": "Have you asked your mobile provider about SIM swap protection for the business line?",
+     "why": "A fraudulent SIM swap moves your number, and your M-Pesa, to a criminal's phone.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Reconcile M-Pesa against sales",
+     "text": "Are M-Pesa records checked against sales every day or week?",
+     "why": "Regular checks expose missing money and insider fraud early.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Assign the payment phone to a named person",
+     "text": "Is the phone holding the business line locked and kept by a named person?",
+     "why": "A shared, unlocked payment phone makes theft easy and impossible to trace.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Separate who starts and who approves payments",
+     "text": "Does one person start a large payment or withdrawal and a different person approve it?",
+     "why": "Two people make both mistakes and fraud much harder.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Limit withdrawals to approved accounts",
+     "text": "Are till or paybill withdrawals limited to approved numbers or your business bank account?",
+     "why": "It stops funds being moved to a personal line.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Give each portal operator their own login",
+     "text": "Does each operator on the M-Pesa business portal have their own login and role?",
+     "why": "Named operators give you an audit trail and let you remove one person cleanly.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Secure your M-Pesa API keys",
+     "text": "If you use the M-Pesa (Daraja) APIs, are keys stored securely, rotated and callbacks validated?",
+     "why": "Leaked API keys or unchecked callbacks let attackers fake or redirect payments.",
+     "weight": 2,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "data",
+   "name": "Data protection",
+   "icon": "file",
+   "large": false,
+   "qs": [
+    {
+     "action": "Register with the ODPC if required",
+     "text": "Are you registered with the Office of the Data Protection Commissioner where the law requires it?",
+     "why": "Kenya's Data Protection Act requires many organisations to register. Check whether yours is one.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Lock away personal data",
+     "text": "Are ID copies, payroll and customer lists locked away or limited to those who need them?",
+     "why": "Personal data is what criminals sell and what the law holds you responsible for.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "List the personal data you hold",
+     "text": "Do you know what personal data you hold on customers and staff?",
+     "why": "Names, ID numbers, phone numbers and M-Pesa records all count.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Tell customers how you use their data",
+     "text": "Do you tell customers how their data is used and get consent where needed?",
+     "why": "People have a legal right to know. A short notice is usually enough.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Destroy old records safely",
+     "text": "Do you shred paper records and wipe old devices before disposal?",
+     "why": "Old phones, disks and files in the bin leak data.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Add data terms to supplier contracts",
+     "text": "Do contracts with suppliers who handle your data include data protection terms?",
+     "why": "You stay responsible for data even when a supplier holds it.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Name a data protection officer",
+     "text": "Have you appointed a data protection officer or a named responsible person?",
+     "why": "Someone must own compliance and be the contact for the regulator.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Assess new systems for privacy risk",
+     "text": "Do you carry out data protection impact assessments for new systems?",
+     "why": "It is required for high-risk processing and catches problems before launch.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "inc",
+   "name": "Incident response",
+   "icon": "bell",
+   "large": false,
+   "qs": [
+    {
+     "action": "Write a one-page incident plan",
+     "text": "Do you have a written list of what to do and who to call if you are hacked or defrauded?",
+     "why": "In a crisis nobody thinks clearly. A simple list saves hours.",
+     "weight": 2,
+     "audience": "A"
+    },
+    {
+     "action": "Know where to report",
+     "text": "Do you know how to report fraud to your bank or Safaricom, the police, the national KE-CIRT/CC and the ODPC?",
+     "why": "A personal data breach must be reported to the ODPC within 72 hours.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Make lost devices reportable at once",
+     "text": "Do staff know how to report a lost or stolen device immediately?",
+     "why": "The first hour is when you can still lock accounts and SIMs.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Record incidents and lessons",
+     "text": "Do you keep a record of past incidents and what you changed afterwards?",
+     "why": "The same trick tends to be tried again.",
+     "weight": 1,
+     "audience": "A"
+    },
+    {
+     "action": "Run an incident drill",
+     "text": "Have you practised an incident drill in the last year?",
+     "why": "A drill shows the gaps in the plan while nothing is at stake.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Arrange cyber insurance or a reserve",
+     "text": "Do you have cyber insurance or money set aside for an incident?",
+     "why": "Recovery, legal advice and downtime cost money quickly.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  },
+  {
+   "id": "gov",
+   "name": "Governance and suppliers",
+   "icon": "case",
+   "large": true,
+   "qs": [
+    {
+     "action": "Make a senior person accountable",
+     "text": "Is a senior manager or board member accountable for cybersecurity?",
+     "why": "Without an owner at the top, security loses every budget discussion.",
+     "weight": 2,
+     "audience": "L"
+    },
+    {
+     "action": "Approve a security policy",
+     "text": "Is there a written information security policy that is reviewed every year?",
+     "why": "It sets the rules everyone else is measured against.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Add cyber risks to the risk register",
+     "text": "Are cyber risks reviewed in your regular risk register?",
+     "why": "It keeps security in front of management alongside other business risks.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Vet key suppliers",
+     "text": "Do you check the security of key suppliers and cloud providers before signing?",
+     "why": "Attackers often come in through a weaker supplier.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Commission independent testing",
+     "text": "Do you have independent security testing or an audit at least once a year?",
+     "why": "Outsiders find what the team that built it cannot see.",
+     "weight": 1,
+     "audience": "L"
+    },
+    {
+     "action": "Follow a recognised standard",
+     "text": "Do you follow a recognised standard such as ISO 27001 or your sector regulator's guidance?",
+     "why": "A standard gives structure and evidence for customers and regulators.",
+     "weight": 1,
+     "audience": "L"
+    }
+   ]
+  }
+ ],
+ "options": [
+  [
+   "yes",
+   "Yes",
+   1
+  ],
+  [
+   "partly",
+   "Partly",
+   0.5
+  ],
+  [
+   "no",
+   "No",
+   0
+  ],
+  [
+   "unsure",
+   "Not sure",
+   0
+  ],
+  [
+   "na",
+   "Does not apply",
+   null
+  ]
+ ],
+ "levels": [
+  [
+   80,
+   "Low",
+   "low"
+  ],
+  [
+   60,
+   "Medium",
+   "med"
+  ],
+  [
+   45,
+   "High",
+   "high"
+  ],
+  [
+   0,
+   "Critical",
+   "crit"
+  ]
+ ]
+}

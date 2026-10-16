@@ -1,0 +1,17 @@
+{% extends "admin/_layout.html" %}
+{% from "macros.html" import icon, chat %}
+{% block admin %}
+<div class="pagehead"><h2>Chats</h2><span class="chip ok"><span class="pulse-dot"></span>Live</span></div>
+{% if cur %}
+<div class="split" style="grid-template-columns:minmax(0,240px) minmax(0,1fr)">
+  <nav class="threads" aria-label="Conversations">
+    {% for b, m in threads %}<a href="{{ url_for('admin.chats', b=b.id) }}" {% if b.id == cur.id %}aria-current="page"{% endif %}><b>{{ b.name }}</b><span class="meta">{{ m.sender_name }}: {{ m.text }}</span></a>{% endfor %}
+    {% if cur.id not in threads|map(attribute=0)|map(attribute='id')|list %}<a aria-current="page"><b>{{ cur.name }}</b><span class="meta">New conversation</span></a>{% endif %}
+  </nav>
+  <div class="stack"><div class="row between"><h3>{{ cur.name }}</h3><a class="small" href="tel:{{ cur.phone }}">{{ cur.phone }}</a></div>
+    {{ chat(url_for('api.chat_get', bid=cur.id), "admin", msgs, placeholder="Reply to " ~ cur.name ~ " as Helpdesk") }}</div>
+</div>
+{% else %}
+<div class="empty">{{ icon("message-circle") }}<p>No customer messages yet.</p></div>
+{% endif %}
+{% endblock %}

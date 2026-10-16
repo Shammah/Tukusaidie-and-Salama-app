@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block content %}
+<section class="stack" style="max-width:760px">
+  <span class="eyebrow">For Kenyan businesses</span>
+  <h1>Keep your IT running and your business safe.</h1>
+  <p class="muted" style="font-size:17px">Two tools, one account. Get a certified technician when something breaks, and check how well your business is protected before something does.</p>
+</section>
+<div class="portal">
+  <a class="appcard tk" href="{{ url_for('tuku.home') }}">
+    <span class="ico lg" style="background:rgba(255,255,255,.12);color:#FFB627">{{ icon("headset") }}</span>
+    <h2>Tukusaidie</h2>
+    <p>IT helpdesk. Free step-by-step fixes for {{ C.HELP|length }} kinds of problems, then a certified agent if you need one. See the price first and pay by M-Pesa.</p>
+    <span class="go">Get IT help {{ icon("arrow-right") }}</span>
+  </a>
+  <a class="appcard sl" href="{{ url_for('salama.overview') }}">
+    <span class="ico lg" style="background:rgba(255,255,255,.12);color:#B9E34B">{{ icon("shield-check") }}</span>
+    <h2>Salama</h2>
+    <p>Cybersecurity self-check. Up to {{ C.N_QUESTIONS }} questions across M-Pesa safety, passwords, backups and data protection, with a ranked fix list.</p>
+    <span class="go">Start the check {{ icon("arrow-right") }}</span>
+  </a>
+</div>
+{% endblock %}

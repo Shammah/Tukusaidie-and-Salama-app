@@ -1,0 +1,41 @@
+{% macro icon(name) %}<i data-lucide="{{ name }}" class="ic" aria-hidden="true"></i>{% endmacro %}
+
+{% macro csrf() %}<input type="hidden" name="csrf" value="{{ csrf_token() }}">{% endmacro %}
+
+{% macro status_chip(t) -%}
+{%- set s = C.TICKET_STATUS.get(t.status, ("Logged", "none")) -%}
+<span class="chip {{ s[1] }}">{{ s[0] }}</span>
+{%- endmacro %}
+
+{% macro work_chip(t) -%}
+{%- if t.work -%}{%- set w = C.WORK_STATUS[t.work] -%}<span class="chip {{ w[1] }}">{{ w[0] }}</span>
+{%- else -%}<span class="chip">Not assigned</span>{%- endif -%}
+{%- endmacro %}
+
+{% macro level_chip(lv, score=None) -%}
+<span class="chip {{ lv[1] }}">{{ lv[0] }}{% if score is not none %} · {{ score }}{% endif %}</span>
+{%- endmacro %}
+
+{% macro answer_chip(a) -%}
+{%- set cls = {"yes": "low", "partly": "med", "no": "crit", "unsure": "high"}.get(a, "") -%}
+<span class="chip {{ cls }}">{{ C.LABEL.get(a, "Not answered") }}</span>
+{%- endmacro %}
+
+{% macro chat(url, me, msgs, placeholder="Type a message", empty="No messages yet.") %}
+<div class="chat" data-chat="{{ url }}" data-me="{{ me }}" data-last="{{ msgs[-1].id if msgs else 0 }}">
+  <div class="msgs" aria-live="polite">
+    {% for m in msgs %}
+    <div class="bubble {{ 'me' if m.sender == me }}"><span class="who">{{ m.sender_name }} · {{ m.created_at|when }}</span>{{ m.text }}</div>
+    {% else %}
+    <p class="none">{{ empty }}</p>
+    {% endfor %}
+  </div>
+  <form autocomplete="off"><label class="sr" for="chatbox">Message</label><input id="chatbox" type="text" placeholder="{{ placeholder }}" maxlength="2000"><button class="btn primary" type="submit">{{ icon("send") }}<span class="sr">Send</span></button></form>
+</div>
+{% endmacro %}
+
+{% macro location_line(t) %}
+{% if t.place or t.lat is not none %}
+<p class="small">{{ icon("map-pin") }} {{ t.place or "Location shared" }}{% if t.lat is not none %} · <a href="https://www.google.com/maps?q={{ t.lat }},{{ t.lng }}" target="_blank" rel="noopener">Open in Maps</a>{% if t.accuracy %} <span class="muted">(about {{ t.accuracy }} m)</span>{% endif %}{% endif %}</p>
+{% endif %}
+{% endmacro %}

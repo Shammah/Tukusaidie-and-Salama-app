@@ -1,0 +1,30 @@
+{% extends "admin/_layout.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block admin %}
+<div class="pagehead"><div><h2>Agents</h2><p class="muted">Check certifications before approving. Approved agents get new tickets in their specialities automatically.</p></div></div>
+<div class="grid g2">
+  {% for a in agents %}
+  <div class="card stack">
+    <div class="row"><div class="grow"><h3>{{ a.name }}</h3><span class="meta">{{ a.email }} · joined {{ a.created_at|when }}</span></div>
+      <span class="chip {{ {'approved':'ok','pending':'warn'}.get(a.status, 'bad') }}">{{ a.status|capitalize }}</span></div>
+    <div class="trow">{% for s in a.specs %}<span class="chip">{{ C.CATS[s].short if s in C.CATS else s }}</span>{% endfor %}</div>
+    <dl class="kv"><dt>Certified</dt><dd>{{ a.certs|join(", ") }}</dd><dt>Reference</dt><dd>{{ a.cert_ref }}</dd><dt>Open tickets</dt><dd>{{ load[a.id] }}</dd></dl>
+    <div class="row">
+      {% if a.status != "approved" %}
+      <form method="post" action="{{ url_for('admin.agent_action', aid=a.id, action='approve') }}">{{ csrf() }}<button class="btn sm primary" type="submit">{{ icon("check") }}{{ "Approve" if a.status == "pending" else "Reinstate" }}</button></form>
+      {% else %}
+      <form method="post" action="{{ url_for('admin.agent_action', aid=a.id, action='suspend') }}" data-confirm="Suspend {{ a.name }}? Their open tickets move to other agents where possible.">{{ csrf() }}<button class="btn sm" type="submit">Suspend</button></form>
+      {% endif %}
+      {% if confirm == a.id %}
+      <form method="post" action="{{ url_for('admin.agent_action', aid=a.id, action='delete') }}">{{ csrf() }}<input type="hidden" name="confirm" value="yes"><button class="btn sm danger solid" type="submit">Yes, remove {{ a.name }}</button></form>
+      <a class="btn sm ghost" href="{{ url_for('admin.agents') }}">Cancel</a>
+      {% else %}
+      <a class="btn sm danger" href="{{ url_for('admin.agents', confirm=a.id) }}">Remove</a>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="empty" style="grid-column:1/-1">{{ icon("headset") }}<p>No agents yet. Technicians apply from <a href="{{ url_for('agent.register') }}">the agent sign-up page</a>.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

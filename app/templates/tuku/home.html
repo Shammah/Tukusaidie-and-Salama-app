@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, status_chip, work_chip %}
+{% block bodyattrs %}data-pulse="1"{% endblock %}
+{% block content %}
+<div class="split">
+  <div class="stack-lg">
+    <div>
+      <span class="small muted">Habari, {{ me.name }}</span>
+      <h2 style="margin-top:4px">What needs fixing today?</h2>
+    </div>
+    <form class="search" action="{{ url_for('tuku.home') }}" role="search">
+      {{ icon("search") }}
+      <input type="search" name="q" value="{{ q }}" placeholder="Search printer, password, WiFi…" aria-label="Search a problem" autocomplete="off" data-search="hits">
+    </form>
+    <div id="hits" class="hits">{% for h in hits %}<a class="hit" href="{{ url_for('tuku.category', cat_id=h.cat, open=h.idx) }}#i{{ h.idx }}"><span class="ico">{{ icon(h.icon) }}</span><span class="grow"><b>{{ h.title }}</b><span class="meta">{{ h.cat_name }}</span></span></a>{% else %}{% if q %}<p class="small muted">No match for “{{ q }}”. Pick a service below.</p>{% endif %}{% endfor %}</div>
+
+    <section class="stack">
+      <div class="row between"><h3>Popular services</h3><a class="btn sm ghost" href="{{ url_for('tuku.services') }}">All {{ C.HELP|length }} {{ icon("arrow-right") }}</a></div>
+      <div class="cats">
+        {% for c in top %}
+        <a class="cat" href="{{ url_for('tuku.category', cat_id=c.id) }}"><span class="ico">{{ icon(c.icon) }}</span><b>{{ c.short }}</b><span class="meta">{{ c.issues|length }} common issues</span></a>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  <aside class="stack">
+    <div class="card stack">
+      <div class="row between"><h3>Your tickets</h3><a class="btn sm ghost" href="{{ url_for('tuku.tickets') }}">View all</a></div>
+      {% if tickets %}
+      <div class="list">
+        {% for t in tickets[:4] %}
+        <a class="item" href="{{ url_for('tuku.ticket', tid=t.id) }}">
+          <span class="grow"><b>{{ t.title }}</b><span class="meta">{{ t.code }} · {{ ksh(t.fee) }}</span></span>
+          {{ status_chip(t) }}
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="small muted">No tickets yet. Find your problem on the left. Most have a free fix.</p>
+      {% endif %}
+    </div>
+    <div class="card stack">
+      <div class="row between"><h3>Computer shops near you</h3><a class="btn sm ghost" href="{{ url_for('tuku.shops') }}">See all</a></div>
+      {% for s in shops %}
+      <a class="shopcard" href="{{ url_for('tuku.shops') }}"><span class="ico">{{ icon("store") }}</span><span class="grow"><b>{{ s.shop.name }}</b><span class="meta">{% if s.km is not none %}<span class="dist">{{ "%.1f"|format(s.km) }} km</span> · {% endif %}{{ s.shop.town }}</span></span></a>
+      {% else %}
+      <p class="small muted">No shops listed near you yet.</p>
+      {% endfor %}
+    </div>
+    <a class="card tint row" href="{{ url_for('salama.overview') }}" style="text-decoration:none;color:inherit">
+      <span class="ico">{{ icon("shield-check") }}</span><span class="grow"><b>How safe is your business?</b><span class="meta">Take the free cyber check: M-Pesa, passwords, backups.</span></span>{{ icon("arrow-right") }}
+    </a>
+  </aside>
+</div>
+{% endblock %}

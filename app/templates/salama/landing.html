@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon %}
+{% block title %}Salama · Cybersecurity check for Kenyan businesses{% endblock %}
+{% block content %}
+<div class="stack-lg">
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow" style="color:var(--accent)">Free cybersecurity self-check</span>
+      <h1 style="margin-top:12px">Is your business<br><em>salama?</em></h1>
+      <p class="lead">Answer up to {{ C.N_QUESTIONS }} plain-language questions about WiFi, passwords, M-Pesa, backups and data protection. Get a risk level for every area and a ranked list of what to fix first.</p>
+      <div class="ctas">
+        <a class="btn primary" href="{{ url_for('customer.register', next=url_for('salama.overview')) }}">Start the free check {{ icon("arrow-right") }}</a>
+        <a class="btn" href="{{ url_for('customer.login', next=url_for('salama.overview')) }}">Continue my check</a>
+      </div>
+      <div class="ticks"><span>{{ icon("check") }}About 10 minutes</span><span>{{ icon("check") }}Saved as you go</span><span>{{ icon("check") }}Download your answers</span></div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="ring low" style="--v:82"><div><b style="color:#fff">82</b><span class="small" style="color:var(--hero-muted)">Low risk</span></div></div>
+      <div class="floaty" style="top:4%;left:0"><span class="ico">{{ icon("smartphone") }}</span><span><b>M-Pesa safety</b>Medium risk</span></div>
+      <div class="floaty" style="bottom:4%;right:0;animation-delay:-3s"><span class="ico">{{ icon("cloud-upload") }}</span><span><b>Backups</b>Fix first: test a restore</span></div>
+    </div>
+  </div>
+</section>
+<section class="stack">
+  <h2>What it covers</h2>
+  <div class="grid g3">
+    {% for s in C.SECTIONS %}
+    <div class="feature card flat"><span class="ico">{{ icon(s.icon) }}</span><div><h3>{{ s.name }}</h3><p>{{ s.qs|length }} questions{% if s.large %}, large companies only{% endif %}</p></div></div>
+    {% endfor %}
+  </div>
+</section>
+</div>
+{% endblock %}

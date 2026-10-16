@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}{{ s.name }} · Tukusaidie{% endblock %}
+{% block content %}
+<div class="stack-lg">
+  <div class="pagehead">
+    <div><span class="eyebrow">Computer shop</span><h2 style="margin-top:6px">{{ s.name }}</h2><p class="muted">{{ s.town }}{% if s.address %}, {{ s.address }}{% endif %} · {{ s.phone }}</p></div>
+    <span class="chip {{ {'approved':'ok','pending':'warn'}.get(s.status, 'bad') }}">{{ s.status|capitalize }}</span>
+  </div>
+  {% if s.status != "approved" %}
+  <div class="banner {{ 'info' if s.status == 'pending' else 'warn' }}">{{ icon("info") }}<span>{% if s.status == "pending" %}Customers will see your shop once the admin approves it. Set up your services meanwhile.{% else %}Your shop is hidden from customers. Contact the admin.{% endif %}</span></div>
+  {% endif %}
+  <div class="stats">
+    <div class="stat"><span>Services listed</span><b>{{ s.services|length }}</b></div>
+    <div class="stat"><span>Jobs recorded</span><b>{{ s.records|length }}</b></div>
+    <div class="stat"><span>Recorded income</span><b>{{ ksh(total) }}</b></div>
+  </div>
+  <nav class="tabs" aria-label="Shop sections">
+    <a href="{{ url_for('shop.dashboard') }}" {% if tab == "services" %}aria-current="page"{% endif %}>{{ icon("wrench") }}Services</a>
+    <a href="{{ url_for('shop.dashboard', tab='records') }}" {% if tab == "records" %}aria-current="page"{% endif %}>{{ icon("receipt") }}Records</a>
+    <a href="{{ url_for('shop.dashboard', tab='profile') }}" {% if tab == "profile" %}aria-current="page"{% endif %}>{{ icon("map-pin") }}Location</a>
+  </nav>
+
+  {% if tab == "services" %}
+  <div class="split">
+    <div class="card stack">
+      <h3>Your services and prices</h3>
+      {% if s.services %}
+      <div class="list">{% for i in s.services %}<div><span class="grow"><b>{{ i.name }}</b><span class="meta">{{ C.CATS[i.cat].name }} · {{ ksh(i.price) if i.price else "Price on request" }}</span></span>
+        <form method="post" action="{{ url_for('shop.delete_service', sid=i.id) }}">{{ csrf() }}<button class="btn sm ghost" type="submit" title="Remove {{ i.name }}">{{ icon("trash-2") }}<span class="sr">Remove</span></button></form></div>{% endfor %}</div>
+      {% else %}<p class="muted">No services listed yet. Add the jobs you do so customers know what to expect.</p>{% endif %}
+      <hr class="sep">
+      <form class="stack" method="post" action="{{ url_for('shop.add_service') }}" novalidate>
+        {{ csrf() }}<h4>Add a service</h4>
+        <label class="field">Service<input type="text" name="name" placeholder="Laptop screen replacement" required></label>
+        <div class="grid g2">
+          <label class="field">Problem area<select name="cat">{% for c in C.HELP if c.id in s.cats %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select></label>
+          <label class="field">Price in KSh <span class="hint">(optional)</span><input type="text" inputmode="numeric" name="price" placeholder="4500"></label>
+        </div>
+        <button class="btn" type="submit">{{ icon("plus") }}Add service</button>
+      </form>
+    </div>
+    <form class="card stack" method="post" action="{{ url_for('shop.cats') }}">
+      {{ csrf() }}<h3>Problems you can fix</h3>
+      <div class="checks" style="grid-template-columns:1fr">{% for c in C.HELP %}<label class="check"><input type="checkbox" name="cats" value="{{ c.id }}" {% if c.id in s.cats %}checked{% endif %}>{{ c.name }}</label>{% endfor %}</div>
+      <button class="btn sm primary" type="submit">Save</button>
+    </form>
+  </div>
+
+  {% elif tab == "records" %}
+  <div class="split">
+    <div class="card stack">
+      <h3>Service records</h3>
+      {% if s.records %}
+      <div class="tblwrap"><table class="tbl"><thead><tr><th>Date</th><th>Customer</th><th>Service</th><th style="text-align:right">KSh</th></tr></thead><tbody>
+        {% for r in s.records %}<tr><td class="small muted">{{ r.created_at|when }}</td><td>{{ r.customer }}{% if r.phone %}<span class="meta">{{ r.phone }}</span>{% endif %}</td><td>{{ r.service }}</td><td style="text-align:right"><b>{{ "{:,}".format(r.amount) }}</b></td></tr>{% endfor %}
+      </tbody></table></div>
+      {% else %}<p class="muted">No jobs recorded yet.</p>{% endif %}
+    </div>
+    <form class="card stack" method="post" action="{{ url_for('shop.add_record') }}" novalidate>
+      {{ csrf() }}<h3>Record a job done</h3>
+      <label class="field">Customer name<input type="text" name="customer" required></label>
+      <label class="field">Customer phone <span class="hint">(optional)</span><input type="tel" name="phone" inputmode="tel"></label>
+      <label class="field">Service<select name="service">{% for i in s.services %}<option>{{ i.name }}</option>{% endfor %}<option>Other</option></select></label>
+      <label class="field">Amount charged in KSh<input type="text" inputmode="numeric" name="amount" required></label>
+      <button class="btn primary" type="submit">Save record</button>
+    </form>
+  </div>
+
+  {% else %}
+  <form class="card stack" method="post" action="{{ url_for('shop.profile') }}" style="max-width:560px" novalidate>
+    {{ csrf() }}<h3>Shop location</h3>
+    <label class="field">Town<input type="text" name="town" value="{{ s.town }}" required></label>
+    <label class="field">Street or building<input type="text" name="address" value="{{ s.address }}"></label>
+    <input type="hidden" name="lat"><input type="hidden" name="lng">
+    <button type="button" class="btn" data-geo="shlocmsg">{{ icon("locate-fixed") }}Use the shop's current location</button>
+    <p class="small" id="shlocmsg" role="status">{% if s.lat is not none %}Map location saved. Customers get directions to the exact spot. <a href="{{ map_link(s) }}" target="_blank" rel="noopener">Check it on the map</a>.{% else %}No map location yet. Stand in the shop and tap the button above so customers get exact directions.{% endif %}</p>
+    {% if s.lat is not none %}<label class="check"><input type="checkbox" name="clear_loc" value="1">Remove the saved map location</label>{% endif %}
+    <button class="btn primary" type="submit">Save details</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

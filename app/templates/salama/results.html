@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, level_chip, answer_chip %}
+{% block title %}Results · Salama{% endblock %}
+{% block content %}
+<div class="stack-lg">
+  <div class="pagehead">
+    <div><span class="eyebrow">{{ me.name }} · {{ "Large company" if a.size == "L" else "Small business" }}</span><h2 style="margin-top:6px">Your cyber check results</h2>
+      <p class="muted">{{ r.answered }} of {{ r.qs|length }} questions answered. Unanswered and “does not apply” questions do not count.</p></div>
+    <div class="row">
+      <a class="btn" href="{{ url_for('salama.results_csv') }}">{{ icon("download") }}Download answers</a>
+      <a class="btn primary" href="{{ url_for('salama.check') }}">{{ icon("pencil") }}Change answers</a>
+    </div>
+  </div>
+  {% if not r.answered %}
+  <div class="empty">{{ icon("clipboard-list") }}<p>No answers yet. <a href="{{ url_for('salama.check') }}">Start the check</a> to see your results.</p></div>
+  {% else %}
+  <div class="split">
+    <div class="stack-lg">
+      <section class="stack">
+        <h3>Fix these first</h3>
+        <div class="card">
+          {% for q in r.gaps[:12] %}
+          <div class="gap">
+            <span class="ico" style="{% if q.weight == 2 %}background:var(--bad-t);color:var(--bad){% endif %}">{{ icon("triangle-alert" if q.weight == 2 else "wrench") }}</span>
+            <div class="grow"><b>{{ q.action }}</b><p class="small muted">{{ q.why }}</p>
+              <div class="trow" style="margin-top:6px">{{ answer_chip(a.answers.get(q.key)) }}{% if q.weight == 2 %}<span class="chip crit">Essential</span>{% endif %}<span class="chip">{{ q.sec.name }}</span></div></div>
+          </div>
+          {% else %}
+          <p class="muted">Nothing to fix in what you answered. Well done.</p>
+          {% endfor %}
+          {% if r.gaps|length > 12 %}<p class="small muted" style="padding-top:12px">and {{ r.gaps|length - 12 }} more in the sections below.</p>{% endif %}
+        </div>
+      </section>
+      <section class="stack">
+        <h3>Every answer by section</h3>
+        {% for s in r.secs %}
+        <details class="sec">
+          <summary><span class="ico">{{ icon(s.sec.icon) }}</span><span class="grow">{{ s.sec.name }}</span>{{ level_chip(s.level, s.score) }}</summary>
+          <div class="in"><ul class="qa">{% for q in s.qs %}<li><span>{{ q.text }}{% if q.weight == 2 %} <span class="muted small">(essential)</span>{% endif %}</span>{{ answer_chip(a.answers.get(q.key)) }}</li>{% endfor %}</ul></div>
+        </details>
+        {% endfor %}
+      </section>
+    </div>
+    <aside class="stack">
+      <div class="card stack center" style="align-items:center">
+        <div class="ring {{ r.level[1] }}" style="--v:{{ r.overall or 0 }}"><div><b>{{ r.overall if r.overall is not none else "–" }}</b><span class="small muted">out of 100</span></div></div>
+        {{ level_chip(r.level) }}
+        <p class="small muted">Risk levels: 80 and above is low, 60 to 79 medium, 45 to 59 high, below 45 critical. Essential questions count double.</p>
+      </div>
+      <div class="card stack">
+        {% for s in r.secs %}
+        <div><div class="row between small"><b>{{ s.sec.name }}</b><span class="muted">{{ s.score if s.score is not none else "–" }}</span></div><div class="bar {{ s.level[1] }}" style="margin-top:6px"><i style="width:{{ s.score or 0 }}%"></i></div></div>
+        {% endfor %}
+      </div>
+      <a class="card tint row" href="{{ url_for('tuku.category', cat_id='sec') }}" style="text-decoration:none;color:inherit"><span class="ico">{{ icon("headset") }}</span><span class="grow"><b>Get help fixing gaps</b><span class="meta">A certified agent can set these up for you.</span></span>{{ icon("arrow-right") }}</a>
+    </aside>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

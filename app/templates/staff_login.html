@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}{{ title }} · Tukusaidie{% endblock %}
+{% block mainclass %}narrow{% endblock %}
+{% block content %}
+<div class="stack">
+  <div>
+    <span class="eyebrow">{{ {"agent": "Service agents", "shop": "Computer shops", "admin": "Owner only"}[who] }}</span>
+    <h2 style="margin-top:6px">{{ title }}</h2>
+  </div>
+  {% if who == "admin" and not has_admin %}
+  <div class="banner warn">{{ icon("triangle-alert") }}<span>No admin sign-in exists yet. Set <b>ADMIN_EMAIL</b> and <b>ADMIN_PASSWORD</b> on the server (or run <span class="mono">flask --app wsgi create-admin you@example.com</span>), then restart.</span></div>
+  {% endif %}
+  <form class="card stack" method="post" novalidate>
+    {{ csrf() }}
+    {% if who == "shop" %}
+    <label class="field">Shop phone number<input type="tel" name="phone" value="{{ ident }}" autocomplete="tel" inputmode="tel" required></label>
+    {% else %}
+    <label class="field">Email<input type="email" name="email" value="{{ ident }}" autocomplete="username" required></label>
+    {% endif %}
+    <label class="field">Password<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn primary block" type="submit">Sign in</button>
+  </form>
+  {% if who == "agent" %}<p class="center small">Certified technician? <a href="{{ url_for('agent.register') }}">Apply to become an agent</a></p>{% endif %}
+  {% if who == "shop" %}<p class="center small">Run a computer shop? <a href="{{ url_for('shop.register') }}">List your shop for free</a></p>{% endif %}
+</div>
+{% endblock %}

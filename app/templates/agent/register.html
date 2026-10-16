@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "macros.html" import icon, csrf %}
+{% block title %}Become an agent · Tukusaidie{% endblock %}
+{% block content %}
+<div class="stack" style="max-width:720px;margin:0 auto">
+  <a class="back" href="{{ url_for('agent.login') }}">{{ icon("arrow-left") }}Agent sign in</a>
+  <div><span class="eyebrow">Service agents</span><h2 style="margin-top:6px">Apply to become a Tukusaidie agent</h2>
+    <p class="muted" style="margin-top:6px">Certified technicians get tickets in their specialities. Your account stays pending until the admin has checked your certification.</p></div>
+  <form class="card stack" method="post" novalidate>
+    {{ csrf() }}
+    <div class="grid g2">
+      <label class="field">Full name<input type="text" name="name" value="{{ form.name }}" autocomplete="name" required></label>
+      <label class="field">Email<input type="email" name="email" value="{{ form.email }}" autocomplete="email" required></label>
+    </div>
+    <label class="field">Password<input type="password" name="password" autocomplete="new-password" minlength="8" required><span class="hint">At least 8 characters.</span></label>
+    <fieldset>
+      <legend>Your specialities <span class="hint">· you only get tickets in these</span></legend>
+      <div class="checks">{% for c in C.HELP %}<label class="check"><input type="checkbox" name="specs" value="{{ c.id }}" {% if c.id in form.specs %}checked{% endif %}>{{ c.name }}</label>{% endfor %}</div>
+    </fieldset>
+    <fieldset>
+      <legend>Certifications <span class="hint">· at least one</span></legend>
+      <div class="checks">{% for c in C.CERTS %}<label class="check"><input type="checkbox" name="certs" value="{{ c }}" {% if c in form.certs %}checked{% endif %}>{{ c }}</label>{% endfor %}</div>
+      <label class="field" style="margin-top:6px">Other certification<input type="text" name="other" value="{{ form.other }}" placeholder="Name of the certificate"></label>
+    </fieldset>
+    <label class="field">Certificate number or issuing institution<input type="text" name="cert_ref" value="{{ form.cert_ref }}" placeholder="Number on the certificate, or the college" required></label>
+    <button class="btn primary block" type="submit">Submit application</button>
+  </form>
+</div>
+{% endblock %}
